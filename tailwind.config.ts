@@ -11,9 +11,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        textColor: "#2D2D2D",
         primaryColor: "#00a63e",
-        backgroundColor: "#F7F5F2",
+        secondaryColor: "#0A0A0A",
+        textColor: "#0C092A",
+        paragraphColor: "#717182",
         foreground: "hsl(var(--foreground))",
         background: "hsl(var(--background))",
         card: {
@@ -62,7 +63,7 @@ export default {
         },
       },
       boxShadow: {
-        custom: "-2px 2px 12px rgba(20, 200, 169, 0.06)",
+        custom: "8px 8px 72px 10px rgba(0, 166, 62, 0.08)",
       },
       borderRadius: {
         lg: "var(--radius)",

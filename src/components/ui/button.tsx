@@ -5,10 +5,9 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import Link from "next/link";
 import React from "react";
-import { GoArrowUpRight } from "react-icons/go";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "gradientBorder";
+  variant?: "default" | "outline";
   size?: "default" | "sm" | "lg" | "icon";
   asChild?: boolean;
   href?: string;
@@ -22,11 +21,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bgColor text-sm lg:text-base rounded-full text-white leading-normal md:text-base font-semibold w-full",
+          "bg-primaryColor text-white text-sm lg:text-base font-medium rounded-[10px] leading-normal  w-full",
         outline:
-          "text-base rounded-full text-white leading-normal md:text-base font-semibold w-full",
-        gradientBorder:
-          "relative rounded-full p-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 inline-block",
+          "text-primaryColor border-2 border-primaryColor text-sm lg:text-base font-medium rounded-[10px] leading-normal  w-full",
       },
       size: {
         default: "h-12",
@@ -50,7 +47,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size,
       asChild = false,
       href,
-      icon,
       animateOnView = false,
       ...props
     },
@@ -72,26 +68,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           whileTap: { scale: 0.97 },
         };
 
-    if (variant === "gradientBorder") {
-      return (
-        <div
-          className="rounded-full p-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"
-          {...motionProps}
-        >
-          <Comp
-            className={cn(
-              "px-6 py-[9px] font-semibold text-textColor bg-white rounded-full w-full flex items-center justify-center",
-              className
-            )}
-            ref={ref}
-            {...(props as any)}
-          >
-            {props.children}
-          </Comp>
-        </div>
-      );
-    }
-
     if (href) {
       return (
         <div {...motionProps}>
@@ -99,15 +75,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             href={href}
             className={cn(
               buttonVariants({ variant, size, className }),
-              "flex items-center justify-between px-1 pl-8 text-center"
+              "text-center"
             )}
           >
             {props.children}
-            {icon && (
-              <div className="bg-white p-2 rounded-full">
-                <GoArrowUpRight className=" text-red-600 size-9" />
-              </div>
-            )}
           </Link>
         </div>
       );
@@ -117,22 +88,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ variant, size, className }),
-          "flex items-center justify-between px-1 pl-4 lg:pl-8 text-center"
+          "px-1 text-center"
         )}
         ref={ref}
         {...(motionProps as any)}
         {...(props as any)}
       >
         {props.children}
-        {icon && (
-          // <MediaButton type="buttonIcon" />
-          <div className="bg-white p-2 rounded-full">
-            <GoArrowUpRight className=" text-red-600 size-9" />
-          </div>
-          // <div className="bg-white h-10 w-10 rounded-full flex items-center justify-center ">
-
-          // </div>
-        )}
       </Comp>
     );
   }
@@ -141,3 +103,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
+

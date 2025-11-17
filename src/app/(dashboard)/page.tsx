@@ -4,7 +4,7 @@ import Dashboard from "@/components/Dashboard/Dashboard";
 
 export default function Page() {
   return (
-    <div className="w-full bg-primaryColor ">
+    <div className="w-full ">
       <Dashboard />
     </div>
   );
