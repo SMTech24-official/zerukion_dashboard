@@ -1,0 +1,157 @@
+"use client";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { navigation } from "@/constants/Navigation";
+import { useDispatch } from "react-redux";
+import Image from "next/image";
+import { logout } from "@/redux/slices/authSlice";
+import { useState } from "react";
+import { X, Menu } from "lucide-react";
+import logo from "@/assets/Logo.svg";
+import sidebarBg from "@/assets/Sidebar.png";
+import { cn } from "@/lib/utils";
+
+const NavbarSlider = () => {
+  const path = usePathname();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleLogOut = () => {
+    dispatch(logout());
+    Cookies.remove("token");
+    router.push("/auth/login");
+  };
+
+  const toggleSidebar = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  return (
+    <>
+      {/* Hamburger (mobile only) */}
+      <div
+        className={cn(
+          "absolute md:hidden top-5 left-5 p-3 flex items-center justify-between bg-primaryColor rounded-xl shadow-xl z-[9999]",
+          isOpen && "hidden"
+        )}
+      >
+        <button onClick={toggleSidebar}>
+          <Menu className="h-8 w-8 text-white" />
+        </button>
+      </div>
+
+      {/* Sidebar Desktop */}
+      <div
+        style={{ backgroundImage: `url(${sidebarBg.src})` }}
+        className="hidden md:flex w-[320px] h-screen border-r px-6 overflow-y-auto shrink-0"
+      >
+        <SidebarContent isOpen={true} handleLogOut={handleLogOut} path={path} />
+      </div>
+
+      {/* Sidebar Mobile (Drawer) */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex md:hidden">
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-40"
+            onClick={toggleSidebar}
+          ></div>
+
+          {/* Drawer */}
+          <div
+            style={{ backgroundImage: `url(${sidebarBg.src})` }}
+            className="relative z-50 w-[290px] h-full shadow-lg px-6 overflow-y-auto"
+          >
+            <div className="flex justify-end items-end py-3">
+              <button onClick={toggleSidebar}>
+                <X className="h-6 w-6 text-white" />
+              </button>
+            </div>
+
+            <SidebarContent
+              isOpen={true}
+              handleLogOut={handleLogOut}
+              path={path}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+/* ---------------- Shared Sidebar Content ---------------- */
+
+const SidebarContent = ({
+  isOpen,
+  handleLogOut,
+  path,
+}: {
+  isOpen: boolean;
+  handleLogOut: () => void;
+  path: string;
+}) => (
+  <aside className="flex flex-col font-inter py-10 w-full h-full">
+    {/* Logo */}
+    <div className="h-28 w-28 mx-auto mb-12">
+      <Image src={logo} alt="Logo" width={200} height={200} />
+    </div>
+
+    {/* Nav Items */}
+    <ul className="ml-1">
+      {navigation?.map((item) => (
+        <li key={item.route}>
+          <Link
+            href={item.route}
+            className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-md transition-colors ${
+              path === item.route
+                ? "bg-primaryColor text-white"
+                : "text-gray-700 hover:bg-primaryColor hover:text-white"
+            }`}
+          >
+            <span className="text-xl">
+              {path === item.route ? item.whiteIcon : item.iconPath}
+            </span>
+            {isOpen && <span className="text-sm">{item.label}</span>}
+          </Link>
+        </li>
+      ))}
+    </ul>
+
+    {/* Logout */}
+    <div className="p-4 mt-auto">
+      <button
+        onClick={handleLogOut}
+        className="flex items-center gap-2 w-full text-red-600 bg-red-100 px-4 py-3 rounded-lg text-sm font-medium"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="none"
+        >
+          <path
+            d="M8.333 2.5 4.254 4.54A1.5 1.5 0 0 0 3.333 6.03v7.94a1.5 1.5 0 0 0 .921 1.39L8.333 17.5"
+            stroke="#D00E11"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M14.583 7.917 16.667 10l-2.084 2.083M8.333 10h7.826"
+            stroke="#D00E11"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        {isOpen && <span>Log out</span>}
+      </button>
+    </div>
+  </aside>
+);
+
+export default NavbarSlider;
