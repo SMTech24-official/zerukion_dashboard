@@ -109,7 +109,7 @@ const SidebarContent = ({
             className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-md transition-colors ${
               path === item.route
                 ? "bg-primaryColor text-white"
-                : "text-gray-700 hover:bg-primaryColor hover:text-white"
+                : "text-white hover:bg-primaryColor hover:text-white"
             }`}
           >
             <span className="text-xl">

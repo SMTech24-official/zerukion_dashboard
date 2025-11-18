@@ -7,10 +7,10 @@
   --font-poppins: "Rubik", sans-serif;
 }
 h1 {
-  font-family: var(--font-arimo);
+  font-family: var(--font-rubik);
 }
 body {
-  font-family: var(--font-rubik);
+  font-family: var(--font-arimo);
 }
 
 /* pi chart  */
