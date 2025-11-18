@@ -22,11 +22,12 @@ body {
 /* Slim Scrollbar Styling */
 .slim-scroll::-webkit-scrollbar {
   width: 5px;
+  border-radius: 10px;
 }
 
 .slim-scroll::-webkit-scrollbar-thumb {
-  background-color: #58c0d7; /* Gray */
-  border-radius: 8px;
+  background-color: #00a63e; /* Gray */
+  border-radius: 0px;
 }
 
 .slim-scroll::-webkit-scrollbar-thumb:hover {

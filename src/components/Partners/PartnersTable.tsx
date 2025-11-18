@@ -1,7 +1,13 @@
-import React from "react";
+"use client";
+
+import { useState } from "react";
 import TableSk from "../Skletone/TableSk";
+import { MediaButton } from "../ui/icon";
+import Modal from "../ui/modal";
+import PartnerDetailsModal from "./PartnersDetailsModal";
 
 export default function PartnersTable({ data, isLoading, isFetching }: any) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   if (isLoading || isFetching) {
     return <TableSk />;
   }
@@ -14,7 +20,7 @@ export default function PartnersTable({ data, isLoading, isFetching }: any) {
               Partner Name
             </th>
             <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
-              Business
+              Email
             </th>
             <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
               Contact
@@ -88,16 +94,32 @@ export default function PartnersTable({ data, isLoading, isFetching }: any) {
                 </td>
 
                 {/* Actions */}
-                <td className="px-6 py-4 text-left">
-                  <button className="text-blue-500 hover:underline">
-                    View
-                  </button>
+                <td className="px-6 py-4 text-left flex items-center gap-3">
+                  <div onClick={() => setIsModalOpen(true)}>
+                    <MediaButton type="eye" />
+                  </div>
+                  {partner.status !== "Accepted" &&
+                    partner.status !== "Rejected " && (
+                      <div>
+                        <MediaButton type="check" />
+                      </div>
+                    )}
+                  {partner.status !== "Accepted" &&
+                    partner.status !== "Rejected" && (
+                      <div>
+                        <MediaButton type="cross" />
+                      </div>
+                    )}
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+
+      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
+        <PartnerDetailsModal onClose={() => setIsModalOpen(false)} />
+      </Modal>
     </div>
   );
 }

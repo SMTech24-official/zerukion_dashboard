@@ -9,7 +9,6 @@ import { useGetAllStatisticsQuery } from "@/redux/api/parnersApi";
 export default function Partners() {
   const [search, setSearch] = useState("");
   const { data } = useGetAllStatisticsQuery("");
-  console.log(data?.data);
 
   return (
     <div className="p-5 md:p-10 space-y-7">
