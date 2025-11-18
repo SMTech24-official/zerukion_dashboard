@@ -28,7 +28,7 @@ export default function OverviewCard({
           </h1>
         </div>
         <div>
-          <MediaButton type={icon || "pound"} />
+          <MediaButton type={icon} />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import image from "@/assets/loginPage.png";
-import logo2 from "@/assets/logo.svg";
+import logo2 from "@/assets/Logo.svg";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

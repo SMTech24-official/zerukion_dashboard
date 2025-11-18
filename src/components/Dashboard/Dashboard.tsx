@@ -18,7 +18,7 @@ export default function Dashboard() {
   const { data: totalData } = useGetDashboardTotalInfoQuery("");
   const { data: topRevenue } = useGetTopRevenueQuery("");
   const { data: recentGames } = useGetRecentGamesQuery("");
-  console.log(recentGames?.data?.recentGames);
+  console.log(recentGames?.data);
 
   return (
     <div className="p-5 md:p-10 space-y-7">
@@ -60,6 +60,23 @@ export default function Dashboard() {
       </div>
       <div>
         <RecentGames data={recentGames?.data?.recentGames} />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 ">
+        <OverviewCard
+          title="Confirmed Games"
+          amount={recentGames?.data?.confirmedGames?.count}
+          percentage={`${recentGames?.data?.confirmedGames?.percentage}% of total games`}
+        />
+        <OverviewCard
+          title="Pending Games"
+          amount={recentGames?.data?.pendingGames?.count}
+          percentage={`${recentGames?.data?.pendingGames?.percentage}% of total games`}
+        />
+        <OverviewCard
+          title="Canceled Games"
+          amount={recentGames?.data?.cancelledGames?.count}
+          percentage={`${recentGames?.data?.cancelledGames?.percentage}% of total games`}
+        />
       </div>
     </div>
   );
