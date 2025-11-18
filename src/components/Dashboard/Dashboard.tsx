@@ -1,19 +1,27 @@
 "use client";
 
-import { overviewData } from "@/constants/overviewInfo";
+import { timeTypes } from "@/constants/DropdownInfo";
+import {
+  useGetDashboardTotalInfoQuery,
+  useGetRecentGamesQuery,
+  useGetTopRevenueQuery,
+} from "@/redux/api/dashboard";
+import { useState } from "react";
 import OverviewCard from "../ui/OverviewCard";
 import { CustomDropdown } from "../ui/dropdown";
-import { useState } from "react";
+import TotalRevenue from "./TotalRevenue";
+import TopVenuesRevenue from "./TopVenuesRevenue";
+import RecentGames from "./RecentGames";
 
 export default function Dashboard() {
   const [selectedTimeType, setSelectedTimeType] = useState("Month");
-  const timeTypes = [
-    { value: "Year", label: "Year" },
-    { value: "Month", label: "Month" },
-    { value: "Week", label: "Week" },
-  ];
+  const { data: totalData } = useGetDashboardTotalInfoQuery("");
+  const { data: topRevenue } = useGetTopRevenueQuery("");
+  const { data: recentGames } = useGetRecentGamesQuery("");
+  console.log(recentGames?.data?.recentGames);
+
   return (
-    <div className="p-5 md:p-10">
+    <div className="p-5 md:p-10 space-y-7">
       <div className=" flex justify-end">
         <div className="w-48">
           <CustomDropdown
@@ -24,16 +32,34 @@ export default function Dashboard() {
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 py-7">
-        {overviewData?.map((data, index: number) => (
-          <OverviewCard
-            key={index}
-            title={data.title}
-            amount={data.amount}
-            percentage={data.percentage}
-            icon={data.icon}
-          />
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 ">
+        <OverviewCard
+          title="Total Revenue"
+          amount={totalData?.data?.totalRevenue}
+          icon="pound"
+        />
+        <OverviewCard
+          title="Total Games"
+          amount={totalData?.data?.totalMatches}
+          icon="calender"
+        />
+        <OverviewCard
+          title="Total Players"
+          amount={totalData?.data?.totalPlayers}
+          icon="man"
+        />
+        <OverviewCard
+          title="Total Partners"
+          amount={totalData?.data?.totalPartners}
+          icon="groupOfMan"
+        />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
+        <TotalRevenue revenue={topRevenue?.data?.totalRevenueBySport} />
+        <TopVenuesRevenue data={topRevenue?.data?.topVenuesByRevenue} />
+      </div>
+      <div>
+        <RecentGames data={recentGames?.data?.recentGames} />
       </div>
     </div>
   );

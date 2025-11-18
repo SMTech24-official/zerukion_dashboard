@@ -1,20 +1,37 @@
-// import { baseApi } from "./baseApi";
+import { baseApi } from "./baseApi";
 
-// // /* eslint-disable @typescript-eslint/no-explicit-any */
+// /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// const DashboardApi = baseApi.injectEndpoints({
-//   endpoints: (build) => ({
-//     //get all user from admin dashboard
-//     getAllDashboardInfo: build.query({
-//       query: ({ month, year }) => ({
-//         url: `/booking/admin/dashboard`,
-//         method: "GET",
-//         params: { month, year }
-//       }),
-//       providesTags: ["booking", "service", "user"],
-//     }),
-//   }),
-// });
+const DashboardApi = baseApi.injectEndpoints({
+  endpoints: (build) => ({
+    //get all user from admin dashboard
+    getDashboardTotalInfo: build.query({
+      query: () => ({
+        url: `/admin-dashboard/dashboard-data`,
+        method: "GET",
+      }),
+      providesTags: ["dashboard"],
+    }),
+    getTopRevenue: build.query({
+      query: () => ({
+        url: `/admin-dashboard/dashboard-table-data`,
+        method: "GET",
+      }),
+      providesTags: ["dashboard"],
+    }),
+    getRecentGames: build.query({
+      query: () => ({
+        url: `/admin-dashboard/dashboard-bellow-table-data`,
+        method: "GET",
+      }),
+      providesTags: ["dashboard"],
+    }),
+  }),
+});
 
-// export const { useGetAllDashboardInfoQuery } = DashboardApi;
-// export default DashboardApi;
+export const {
+  useGetDashboardTotalInfoQuery,
+  useGetTopRevenueQuery,
+  useGetRecentGamesQuery,
+} = DashboardApi;
+export default DashboardApi;

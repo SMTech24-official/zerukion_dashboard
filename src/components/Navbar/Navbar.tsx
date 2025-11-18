@@ -9,7 +9,7 @@ export default function Navbar() {
       className={`flex items-center px-2 md:px-10 py-6 shadow-[8px_8px_72px_10px_rgba(21,14,73,0.08)]  bg-white z-[9] w-full`}
     >
       <div className="flex justify-between w-full">
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <h1 className="text-textColor text-2xl font-bold leading-normal">
             Overview
           </h1>

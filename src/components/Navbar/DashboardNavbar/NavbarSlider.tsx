@@ -34,7 +34,7 @@ const NavbarSlider = () => {
       {/* Hamburger (mobile only) */}
       <div
         className={cn(
-          "absolute md:hidden top-5 left-5 p-3 flex items-center justify-between bg-primaryColor rounded-xl shadow-xl z-[9999]",
+          "absolute lg:hidden top-5 left-5 p-3 flex items-center justify-between bg-primaryColor rounded-xl shadow-xl z-[9999]",
           isOpen && "hidden"
         )}
       >
@@ -46,14 +46,14 @@ const NavbarSlider = () => {
       {/* Sidebar Desktop */}
       <div
         style={{ backgroundImage: `url(${sidebarBg.src})` }}
-        className="hidden md:flex w-[320px] h-screen border-r px-6 overflow-y-auto shrink-0"
+        className="hidden lg:flex  w-[220px] xl:w-[320px] h-screen border-r px-6 overflow-y-auto shrink-0"
       >
         <SidebarContent isOpen={true} handleLogOut={handleLogOut} path={path} />
       </div>
 
       {/* Sidebar Mobile (Drawer) */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex md:hidden">
+        <div className="fixed inset-0 z-50 flex lg:hidden">
           {/* Overlay */}
           <div
             className="fixed inset-0 bg-black bg-opacity-40"
