@@ -48,13 +48,11 @@ export function FormInput<T extends FieldValues>({
       )}
       <div
         className={cn(
-          "flex items-center gap-3 w-full px-6 py-3 bg-white rounded-full border",
+          "flex items-center gap-3 w-full  py-3 bg-[#f3f3f5] rounded-lg",
           error ? "border-red-500" : "border-gray-200",
           className
         )}
       >
-        
-
         <div className="relative w-full">
           {isPasswordField && (
             <button
@@ -69,17 +67,14 @@ export function FormInput<T extends FieldValues>({
           <input
             id={name}
             type={isPasswordField ? (isEyeOpen ? "text" : "password") : type}
-            {...register(
-              name,
-              {
-                required: `${label || name} is required`,
-                ...(type === "number" ? { valueAsNumber: true } : {}),
-                ...(rules as RegisterOptions<any, any>),
-              } as RegisterOptions<T, Path<T>>
-            )}
+            {...register(name, {
+              required: `${label || name} is required`,
+              ...(type === "number" ? { valueAsNumber: true } : {}),
+              ...(rules as RegisterOptions<any, any>),
+            } as RegisterOptions<T, Path<T>>)}
             {...rest}
             className={cn(
-              "w-full text-[#747474] text-base font-medium outline-none pr-10 bg-transparent",
+              "w-full text-[#747474] text-base font-medium outline-none pr-10 px-5 bg-transparent",
               error && "text-red-500 placeholder:text-red-400"
             )}
           />

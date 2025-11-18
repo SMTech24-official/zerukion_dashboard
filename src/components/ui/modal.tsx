@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({
       >
         <div className="w-full flex items-end justify-end ">
           <RxCross1
-            className="text-2xl dark:text-[#abc2d3]/70 dark:hover:bg-slate-900/50 hover:bg-[#e7e7e7] rounded-full transition-all duration-300 cursor-pointer"
+            className="text-2xl dark:text-[#abc2d3]/70 dark:hover:bg-slate-900/50  rounded-full transition-all duration-300 cursor-pointer"
             onClick={() => setIsModalOpen(false)}
           />
         </div>

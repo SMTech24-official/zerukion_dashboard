@@ -38,6 +38,18 @@ body {
   background-color: transparent;
 }
 
+/* Change placeholder color */
+.custom-date-picker .ant-picker-input > input::placeholder {
+  color: #00a63e !important; /* Your desired placeholder color */
+  opacity: 1;
+}
+
+/* Change calendar icon color */
+.custom-date-picker .ant-picker-suffix svg {
+  fill: #00a63e !important; /* icon color */
+  color: #00a63e !important;
+}
+
 /* tab style  */
 .ant-select-selector {
   @apply rounded-xl px-5 py-7 border-2 border-[#D9D9D9] text-base font-medium !important;

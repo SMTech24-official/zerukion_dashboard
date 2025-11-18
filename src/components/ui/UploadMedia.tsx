@@ -149,22 +149,22 @@ export default function UploadMedia({
       )}
 
       <div
-        className={`bg-[#f5f5f5] border-2 border-dashed border-[#e0e0e0] rounded-md w-full ${
+        className={`bg-[#f5f5f5] border-2 border-dashed border-primaryColor rounded-md w-full ${
           isDragOver ? "bg-blue-50 border-blue-400" : ""
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="p-5 text-center space-y-4">
-          <Upload className="h-12 w-12 text-blue-500 mx-auto" />
-          <p className="text-sm md:text-lg text-gray-700 mb-3">
+        <div className="p-3 text-center space-y-1">
+          <Upload className="h-5 w-5 text-blue-500 mx-auto" />
+          <p className="text-sm text-gray-700 mb-3">
             Drag & Drop your files
           </p>
           <button
             type="button"
             onClick={handleBrowseClick}
-            className="bg-primaryColor text-sm rounded-md text-white px-6 py-2 md:text-base font-semibold"
+            className="bg-primaryColor text-sm rounded-md text-white px-6 py-1 font-semibold"
           >
             Browse to Upload
           </button>
