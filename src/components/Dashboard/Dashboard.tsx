@@ -18,7 +18,6 @@ export default function Dashboard() {
   const { data: totalData } = useGetDashboardTotalInfoQuery("");
   const { data: topRevenue } = useGetTopRevenueQuery("");
   const { data: recentGames } = useGetRecentGamesQuery("");
-  console.log(recentGames?.data);
 
   return (
     <div className="p-5 md:p-10 space-y-7">
