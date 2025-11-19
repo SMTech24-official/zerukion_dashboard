@@ -10,6 +10,7 @@ import {
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormInput } from "../ui/Input";
+import getLatLngFromAddress from "@/lib/getLatLngFromAddress";
 
 interface FormProps {
   venueName: string;
@@ -48,16 +49,18 @@ export default function AddVanue({ vanueId, setIsModalOpen }: Props) {
   const [updateVenuesFN, { isLoading: isUpdating }] = useUpdateVenueMutation();
 
   const onSubmit = async (data: any) => {
+    const { lat, lng } = await getLatLngFromAddress(data.address);
+   
+
     const venueInfo = {
       venueName: data.venueName,
       address: data.address,
       sportsType: data?.sportsType,
-      locationLat: 23.8507,
-      locationLng: 90.2543,
+      locationLat: lat,
+      locationLng: lng,
       fieldSize: data.fieldSize,
       pricePerHour: data.pricePerHour,
     };
-
     if (vanueId) {
       const res = await handleApiResponse(
         updateVenuesFN,
