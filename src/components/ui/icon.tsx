@@ -17,7 +17,8 @@ type MediaButtonProps = {
     | "cross"
     | "venus"
     | "allVenues"
-    | "edit";
+    | "edit"
+    | "games";
 };
 
 const icons = {
@@ -533,6 +534,44 @@ const icons = {
         d="M12.2499 1.74991C12.5151 1.48469 12.8748 1.33569 13.2499 1.33569C13.625 1.33569 13.9847 1.48469 14.2499 1.74991C14.5151 2.01512 14.6641 2.37483 14.6641 2.74991C14.6641 3.12498 14.5151 3.48469 14.2499 3.74991L8.24123 9.75924C8.08293 9.9174 7.88737 10.0332 7.67257 10.0959L5.75723 10.6559C5.69987 10.6726 5.63906 10.6736 5.58117 10.6588C5.52329 10.644 5.47045 10.6139 5.4282 10.5716C5.38594 10.5294 5.35583 10.4765 5.341 10.4186C5.32617 10.3607 5.32717 10.2999 5.3439 10.2426L5.9039 8.32724C5.96692 8.11261 6.08292 7.91728 6.24123 7.75924L12.2499 1.74991Z"
         stroke="#0A0A0A"
         stroke-width="1.33333"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  games: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M16 2V6M8 2V6"
+        stroke="#00C950"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M13 4H11C7.22876 4 5.34315 4 4.17157 5.17157C3 6.34315 3 8.22876 3 12V14C3 17.7712 3 19.6569 4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284C21 19.6569 21 17.7712 21 14V12C21 8.22876 21 6.34315 19.8284 5.17157C18.6569 4 16.7712 4 13 4Z"
+        stroke="#00C950"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M3 10H21"
+        stroke="#00C950"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M11.9955 14H12.0045M11.9955 18H12.0045M15.991 14H16M8 14H8.00897M8 18H8.00897"
+        stroke="#00C950"
+        stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />

@@ -1,8 +1,13 @@
+// FULL FIXED CODE FOR CreateGameByVenue
+
 "use client";
 
 import { skillType } from "@/constants/DropdownInfo";
 import { handleApiResponse } from "@/lib/handleRTKResponse";
-import { useCreateGamesMutation } from "@/redux/api/gamesApi";
+import {
+  useCreateGamesMutation,
+  useGetSingelGamesQuery,
+} from "@/redux/api/gamesApi";
 import {
   useGetSingleVenueQuery,
   useGetVenuesListQuery,
@@ -12,6 +17,7 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormInput } from "../ui/Input";
 import UploadMedia from "../ui/UploadMedia";
+import dayjs from "dayjs";
 
 interface FormProps {
   title: string;
@@ -23,56 +29,89 @@ interface FormProps {
   bookingFeePerPlayer: string;
   venue: string;
   sportsType: string;
-  date: string;
-  startTime: string;
+  date: any;
+  startTime: any;
   location: string;
   locationLat: number;
   locationLng: number;
+  bannerImage: File[];
 }
+
 interface Props {
   vanueId?: string | null;
   setIsModalOpen: (isOpen: boolean) => void;
+  gameId?: string | null;
 }
 
-export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
+export default function CreateGameByvanue({
+  vanueId,
+  setIsModalOpen,
+  gameId,
+}: Props) {
   const methods = useForm<FormProps>();
-  const { handleSubmit, setValue } = methods;
+  const { handleSubmit, setValue, watch } = methods;
+
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<any>(null);
+
   const { data: singleVanue } = useGetSingleVenueQuery(vanueId, {
     skip: !vanueId,
   });
+  const { data: singleGame } = useGetSingelGamesQuery(gameId, {
+    skip: !gameId,
+  });
+  console.log(singleGame);
   const { data: vanuesList } = useGetVenuesListQuery("");
 
   useEffect(() => {
-    if (singleVanue?.data) {
-      setSelected(singleVanue?.data);
-      setValue("venue", singleVanue?.data.id);
-      setValue("sportsType", singleVanue?.data.sportsType);
-      setValue("location", singleVanue?.data.address);
-      setValue("locationLat", singleVanue?.data.locationLat);
-      setValue("locationLng", singleVanue?.data.locationLng);
-      setValue(
-        "pricePerHour",
-        singleVanue?.data.pricePerHour
-          ? singleVanue?.data.pricePerHour.toString()
-          : "0"
-      );
-    }
-  }, [singleVanue, setValue]);
+    if (singleVanue?.data && vanueId) {
+      const v = singleVanue.data;
+      setSelected(v);
 
-  const handleSelect = (venue: any) => {
+      setValue("venue", v.id);
+      setValue("sportsType", v.sportsType);
+      setValue("location", v.address);
+      setValue("locationLat", v.locationLat);
+      setValue("locationLng", v.locationLng);
+      setValue("pricePerHour", v.pricePerHour?.toString() || "0");
+    }
+
+    if (singleGame?.data && gameId) {
+      const g = singleGame.data;
+      setSelected({ venueName: g.title });
+
+      setValue("title", g.title);
+      setValue("venue", g.venueId);
+      setValue("sportsType", g.sportsType);
+      setValue("location", g.location);
+      setValue("locationLat", g.locationLat);
+      setValue("locationLng", g.locationLng);
+      setValue("pricePerHour", g.price?.toString() || "0");
+
+      setValue("date", dayjs(g.date));
+      setValue("startTime", dayjs(g.time));
+
+      setValue("duration", g.playingDuration.toString());
+      setValue("minPlayers", g.minimumPlayers.toString());
+      setValue("maxPlayers", g.maximumPlayers.toString());
+      setValue("skillLevel", g.skillLevel);
+      setValue("bookingFeePerPlayer", g.bookingFeePerPlayer?.toString() || "0");
+    }
+  }, [singleVanue, singleGame, setValue, vanueId, gameId]);
+
+  const handleSelectVenue = (venue: any) => {
     setSelected(venue);
     setValue("venue", venue.id);
     setValue("sportsType", venue.sportsType);
     setValue("location", venue.address);
     setValue("locationLat", venue.locationLat);
     setValue("locationLng", venue.locationLng);
-    setValue("pricePerHour", venue.pricePerHour || "0");
+    setValue("pricePerHour", venue.pricePerHour?.toString() || "0");
     setOpen(false);
   };
 
   const [createGameFN, { isLoading }] = useCreateGamesMutation();
+
   const onSubmit = async (data: any) => {
     const formData = new FormData();
 
@@ -91,24 +130,28 @@ export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
       minimumPlayers: data.minPlayers,
       maximumPlayers: data.maxPlayers,
     };
-    data.bannerImage.forEach((file: any) => {
-      formData.append("bannerImage", file);
-    });
+
+    if (data.bannerImage) {
+      data.bannerImage.forEach((file: any) => {
+        formData.append("bannerImage", file);
+      });
+    }
+
     formData.append("bodyData", JSON.stringify(gameInfo));
+
     const res = await handleApiResponse(
       createGameFN,
       formData,
       "Game create successful!"
     );
     if (res.success) {
-      //reset form
       methods.reset();
       setIsModalOpen(false);
     }
   };
 
   return (
-    <div>
+    <div className="text-start">
       <div>
         <div className="mb-2">
           <h2 className="text-lg font-bold text-gray-900">Create New Game</h2>
@@ -118,13 +161,13 @@ export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <UploadMedia name="bannerImage" label="Image" />
 
-            <FormInput<FormProps>
+            <FormInput
               name="title"
               label="Title of the Game"
-              placeholder="Enter title of the game"
+              placeholder="Enter title"
             />
 
-            {/* Venue selector */}
+            {/* Venue Selector */}
             <div className="flex gap-5">
               <div className="w-full relative">
                 <label className="text-base font-normal text-textColor">
@@ -135,9 +178,7 @@ export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
                   onClick={() => setOpen(!open)}
                 >
                   {selected ? (
-                    <div>
-                      <p className="font-medium">{selected.venueName}</p>
-                    </div>
+                    <p className="font-medium">{selected.venueName}</p>
                   ) : (
                     <p className="text-gray-500">Select venue</p>
                   )}
@@ -149,7 +190,7 @@ export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
                       <div
                         key={venue.id}
                         className="p-3 hover:bg-gray-100 rounded-lg cursor-pointer"
-                        onClick={() => handleSelect(venue)}
+                        onClick={() => handleSelectVenue(venue)}
                       >
                         <p className="font-medium">{venue.venueName}</p>
                         <div className="flex items-center justify-between text-sm text-gray-500">
@@ -163,60 +204,51 @@ export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
               </div>
             </div>
 
-            {/* Date + Time */}
-            <div className="flex gap-5">
-              <div className="w-full">
-                <label className="text-base font-normal text-textColor">
-                  Date and Time
-                </label>
-                <Space direction="vertical" size={12} className="w-full">
-                  <DatePicker
-                    showTime
-                    onChange={(value) => {
-                      if (value) {
-                        // Date at 00:00:00
-                        const isoDateWithGMT = value
-                          .clone()
-                          .startOf("day")
-                          .format(); // ISO string with GMT offset
-                        const isoTimeWithGMT = value.clone().format(); // Full ISO with time and GMT
-
-                        setValue("date", isoDateWithGMT);
-                        setValue("startTime", isoTimeWithGMT);
-                      }
-                    }}
-                    className="mt-2 w-full py-[10px] bg-[#f3f3f5] rounded-lg px-3"
-                  />
-                </Space>
-              </div>
+            {/* Date & Time */}
+            <div className="w-full">
+              <label className="text-base font-normal text-textColor">
+                Date and Time
+              </label>
+              <Space direction="vertical" size={12} className="w-full">
+                <DatePicker
+                  showTime
+                  value={watch("startTime") ? dayjs(watch("startTime")) : null}
+                  onChange={(value) => {
+                    if (value) {
+                      setValue("date", value.startOf("day").toISOString());
+                      setValue("startTime", value.toISOString());
+                    }
+                  }}
+                  className="mt-2 w-full py-[10px] bg-[#f3f3f5] rounded-lg px-3"
+                />
+              </Space>
             </div>
 
             {/* Players */}
             <div className="flex gap-5">
-              <FormInput<FormProps>
+              <FormInput
                 name="minPlayers"
+                type="number"
                 label="Minimum Players"
-                type="number"
-                placeholder="Enter minimum players"
               />
-              <FormInput<FormProps>
+              <FormInput
                 name="maxPlayers"
-                label="Maximum Players"
                 type="number"
-                placeholder="Enter maximum players"
+                label="Maximum Players"
               />
             </div>
 
+            {/* Skill Level */}
             <div className="flex gap-5">
               <div className="w-full">
                 <label className="text-base font-normal text-textColor">
                   Skill Level
                 </label>
                 <select
+                  {...methods.register("skillLevel")}
                   className="mt-3 w-full py-3 bg-[#f3f3f5] rounded-lg px-3 outline-none"
-                  onChange={(e) => setValue("skillLevel", e.target.value)}
                 >
-                  <option value="">Select venue</option>
+                  <option value="">Select skill level</option>
                   {skillType.map((type) => (
                     <option key={type.value} value={type.value}>
                       {type.label}
@@ -225,26 +257,24 @@ export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
                 </select>
               </div>
 
-              <FormInput<FormProps>
+              <FormInput
                 name="duration"
                 type="number"
-                label="Playing Duration Time (hour)"
-                placeholder="Enter playing duration time"
+                label="Playing Duration (hour)"
               />
             </div>
 
-            <FormInput<FormProps>
+            <FormInput
               name="bookingFeePerPlayer"
               type="number"
               label="Booking Fee per Player (€)"
-              placeholder="00.0"
             />
 
             <button
               type="submit"
               className="bg-green-600 text-white px-6 py-2 rounded"
             >
-              {isLoading ? "loading alskjf..." : "Create Game"}
+              {isLoading ? "Loading..." : "Create Game"}
             </button>
           </form>
         </FormProvider>

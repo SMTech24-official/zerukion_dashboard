@@ -25,6 +25,8 @@ export default function Venues() {
           Add Venue
         </Button>
       </div>
+
+
       <div className="bg-white p-5 border border-borderColor rounded-2xl shadow-custom">
         <div className="flex items-center gap-3">
           <MediaButton type="allVenues" />
@@ -32,6 +34,7 @@ export default function Venues() {
             Available All Venus
           </h1>
         </div>
+        
         <div className="mt-5">
           {isError && (
             <p className="text-red-500">Failed to load venues data.</p>

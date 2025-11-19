@@ -50,7 +50,7 @@ const VanuesApi = baseApi.injectEndpoints({
         method: "GET",
         params: { date },
       }),
-      providesTags: ["vanues"],
+      providesTags: ["vanues",'games'],
     }),
     //get all venues list for dropdown
     getVenuesList: build.query({

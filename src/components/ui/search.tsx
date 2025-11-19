@@ -25,7 +25,7 @@ export default function Search({ value, onChange }: SearchProps) {
 
   return (
     <div>
-      <div className="flex items-center gap-2 py-3 rounded-xl border border-borderColor px-5 focus-within:border-primaryColor focus-within:ring-1 focus-within:ring-primaryColor transition">
+      <div className="flex items-center gap-2 py-3 rounded-xl border border-[#E5E5EC] px-5 focus-within:border-primaryColor focus-within:ring-1 focus-within:ring-primaryColor transition">
         <MediaButton type="search" />
         <input
           type="text"

@@ -41,7 +41,7 @@ export function FormInput<T extends FieldValues>({
       {label && (
         <label
           htmlFor={name}
-          className="text-base font-normal mb-3 text-textColor"
+          className="text-base text-left font-normal mb-3 text-textColor"
         >
           {label}
         </label>
