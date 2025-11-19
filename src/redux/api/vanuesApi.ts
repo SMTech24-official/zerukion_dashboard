@@ -5,6 +5,26 @@ import { baseApi } from "./baseApi";
 const VanuesApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     //get all available venues by date
+    getAllVenues: build.query({
+      query: ({ date }) => ({
+        url: `/venues`,
+        method: "GET",
+        params: { date },
+      }),
+      providesTags: ["vanues"],
+    }),
+
+    //create new venue
+    createVenue: build.mutation({
+      query: (data) => ({
+        url: `/venues`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["vanues"],
+    }),
+
+    //get all available venues by date
     getAvailableVenues: build.query({
       query: ({ date }) => ({
         url: `/venues/available-venues`,
@@ -30,12 +50,23 @@ const VanuesApi = baseApi.injectEndpoints({
       }),
       providesTags: ["vanues"],
     }),
+    //get single venue details by id
+    getSportsType: build.query({
+      query: () => ({
+        url: `/settings/get-active-sports-type`,
+        method: "GET",
+      }),
+      providesTags: ["vanues", "settings"],
+    }),
   }),
 });
 
 export const {
+  useGetAllVenuesQuery,
+  useCreateVenueMutation,
   useGetAvailableVenuesQuery,
   useGetVenuesListQuery,
   useGetSingleVenueQuery,
+  useGetSportsTypeQuery,
 } = VanuesApi;
 export default VanuesApi;
