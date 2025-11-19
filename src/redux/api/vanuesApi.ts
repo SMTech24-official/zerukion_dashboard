@@ -24,6 +24,25 @@ const VanuesApi = baseApi.injectEndpoints({
       invalidatesTags: ["vanues"],
     }),
 
+    //delete venue
+    deleteVenue: build.mutation({
+      query: (id) => ({
+        url: `/venues/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["vanues"],
+    }),
+
+    //update venue
+    updateVenue: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/venues/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["vanues"],
+    }),
+
     //get all available venues by date
     getAvailableVenues: build.query({
       query: ({ date }) => ({
@@ -64,6 +83,8 @@ const VanuesApi = baseApi.injectEndpoints({
 export const {
   useGetAllVenuesQuery,
   useCreateVenueMutation,
+  useDeleteVenueMutation,
+  useUpdateVenueMutation,
   useGetAvailableVenuesQuery,
   useGetVenuesListQuery,
   useGetSingleVenueQuery,

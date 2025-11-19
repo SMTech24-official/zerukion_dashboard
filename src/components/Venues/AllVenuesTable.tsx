@@ -5,13 +5,24 @@ import TableSk from "../Skletone/TableSk";
 import { MediaButton } from "../ui/icon";
 import Modal from "../ui/modal";
 import AddVanue from "./AddVanue";
+import { useDeleteVenueMutation } from "@/redux/api/vanuesApi";
+import { handleApiResponse } from "@/lib/handleRTKResponse";
+import { CgSpinner } from "react-icons/cg";
 
 export default function AllVenuesTable({ data, isLoading, isFetching }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVenueId, setSelectedVenueId] = useState<string | null>(null);
+
+  const [deleteFN, { isLoading: isDeleting }] = useDeleteVenueMutation();
+
+  const handleDelete = async (id: string) => {
+    await handleApiResponse(deleteFN, id, "Venue deleted successfully!");
+  };
+
   if (isLoading || isFetching) {
     return <TableSk />;
   }
+
   return (
     <div className="w-full overflow-x-auto">
       <table className="min-w-full bg-white rounded-xl overflow-x-auto">
@@ -76,8 +87,17 @@ export default function AllVenuesTable({ data, isLoading, isFetching }: any) {
                     <MediaButton type="edit" />
                   </div>
 
-                  <div>
-                    <MediaButton type="cross" />
+                  <div
+                    onClick={() => {
+                      handleDelete(venue.id);
+                      setSelectedVenueId(venue.id);
+                    }}
+                  >
+                    {isDeleting && selectedVenueId === venue.id ? (
+                      <CgSpinner className="animate-spin text-red-500" />
+                    ) : (
+                      <MediaButton type="cross" />
+                    )}
                   </div>
                 </td>
               </tr>

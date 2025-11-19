@@ -5,10 +5,11 @@ import {
   useCreateVenueMutation,
   useGetSingleVenueQuery,
   useGetSportsTypeQuery,
+  useUpdateVenueMutation,
 } from "@/redux/api/vanuesApi";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormInput } from "../ui/Input";
-import { useEffect } from "react";
 
 interface FormProps {
   venueName: string;
@@ -44,6 +45,8 @@ export default function AddVanue({ vanueId, setIsModalOpen }: Props) {
   }, [vanueId, singleVanue, setValue]);
 
   const [createVenuesFN, { isLoading }] = useCreateVenueMutation();
+  const [updateVenuesFN, { isLoading: isUpdating }] = useUpdateVenueMutation();
+
   const onSubmit = async (data: any) => {
     const venueInfo = {
       venueName: data.venueName,
@@ -54,17 +57,29 @@ export default function AddVanue({ vanueId, setIsModalOpen }: Props) {
       fieldSize: data.fieldSize,
       pricePerHour: data.pricePerHour,
     };
-    console.log(venueInfo, "valkjas dlfkjo");
 
-    const res = await handleApiResponse(
-      createVenuesFN,
-      venueInfo,
-      "Venue create successful!"
-    );
-    if (res.success) {
-      //reset form
-      methods.reset();
-      setIsModalOpen(false);
+    if (vanueId) {
+      const res = await handleApiResponse(
+        updateVenuesFN,
+        { data: venueInfo, id: vanueId },
+        "Venue update successfully!"
+      );
+      if (res.success) {
+        //reset form
+        methods.reset();
+        setIsModalOpen(false);
+      }
+    } else {
+      const res = await handleApiResponse(
+        createVenuesFN,
+        venueInfo,
+        "Venue created successfully!"
+      );
+      if (res.success) {
+        //reset form
+        methods.reset();
+        setIsModalOpen(false);
+      }
     }
   };
 
@@ -72,7 +87,9 @@ export default function AddVanue({ vanueId, setIsModalOpen }: Props) {
     <div>
       <div>
         <div className="mb-2">
-          <h2 className="text-lg font-bold text-gray-900">Create New Game</h2>
+          <h2 className="text-lg font-bold text-gray-900">
+            {vanueId ? "Update" : "Create"} New Game
+          </h2>
         </div>
 
         <FormProvider {...methods}>
@@ -131,7 +148,11 @@ export default function AddVanue({ vanueId, setIsModalOpen }: Props) {
                 type="submit"
                 className="bg-green-600 text-white px-6 py-2 rounded"
               >
-                {isLoading ? "loading alskjf..." : "Create Game"}
+                {isLoading || isUpdating
+                  ? "loading..."
+                  : vanueId
+                  ? "Update Venue"
+                  : "Create Venue"}
               </button>
             </div>
           </form>
