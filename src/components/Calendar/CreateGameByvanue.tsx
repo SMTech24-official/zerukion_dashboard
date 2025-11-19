@@ -3,9 +3,12 @@
 import { skillType } from "@/constants/DropdownInfo";
 import { handleApiResponse } from "@/lib/handleRTKResponse";
 import { useCreateGamesMutation } from "@/redux/api/gamesApi";
-import { useGetVenuesListQuery } from "@/redux/api/vanuesApi";
+import {
+  useGetSingleVenueQuery,
+  useGetVenuesListQuery,
+} from "@/redux/api/vanuesApi";
 import { DatePicker, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormInput } from "../ui/Input";
 import UploadMedia from "../ui/UploadMedia";
@@ -32,14 +35,31 @@ interface Props {
 }
 
 export default function CreateGameByvanue({ vanueId, setIsModalOpen }: Props) {
-  console.log(vanueId);
   const methods = useForm<FormProps>();
   const { handleSubmit, setValue } = methods;
+  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<any>(null);
-
+  const { data: singleVanue } = useGetSingleVenueQuery(vanueId, {
+    skip: !vanueId,
+  });
   const { data: vanuesList } = useGetVenuesListQuery("");
 
-  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (singleVanue?.data) {
+      setSelected(singleVanue?.data);
+      setValue("venue", singleVanue?.data.id);
+      setValue("sportsType", singleVanue?.data.sportsType);
+      setValue("location", singleVanue?.data.address);
+      setValue("locationLat", singleVanue?.data.locationLat);
+      setValue("locationLng", singleVanue?.data.locationLng);
+      setValue(
+        "pricePerHour",
+        singleVanue?.data.pricePerHour
+          ? singleVanue?.data.pricePerHour.toString()
+          : "0"
+      );
+    }
+  }, [singleVanue, setValue]);
 
   const handleSelect = (venue: any) => {
     setSelected(venue);

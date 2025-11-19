@@ -4,7 +4,7 @@ import { baseApi } from "./baseApi";
 
 const VanuesApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    //get all statistics for admin dashboard
+    //get all available venues by date
     getAvailableVenues: build.query({
       query: ({ date }) => ({
         url: `/venues/available-venues`,
@@ -13,6 +13,7 @@ const VanuesApi = baseApi.injectEndpoints({
       }),
       providesTags: ["vanues"],
     }),
+    //get all venues list for dropdown
     getVenuesList: build.query({
       query: () => ({
         url: `/venues/venue-dropdown`,
@@ -20,8 +21,21 @@ const VanuesApi = baseApi.injectEndpoints({
       }),
       providesTags: ["vanues"],
     }),
+
+    //get single venue details by id
+    getSingleVenue: build.query({
+      query: (id) => ({
+        url: `/venues/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["vanues"],
+    }),
   }),
 });
 
-export const { useGetAvailableVenuesQuery, useGetVenuesListQuery } = VanuesApi;
+export const {
+  useGetAvailableVenuesQuery,
+  useGetVenuesListQuery,
+  useGetSingleVenueQuery,
+} = VanuesApi;
 export default VanuesApi;
