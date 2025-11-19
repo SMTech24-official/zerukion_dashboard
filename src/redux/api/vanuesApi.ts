@@ -13,8 +13,15 @@ const VanuesApi = baseApi.injectEndpoints({
       }),
       providesTags: ["vanues"],
     }),
+    getVenuesList: build.query({
+      query: () => ({
+        url: `/venues/venue-dropdown`,
+        method: "GET",
+      }),
+      providesTags: ["vanues"],
+    }),
   }),
 });
 
-export const { useGetAvailableVenuesQuery } = VanuesApi;
+export const { useGetAvailableVenuesQuery, useGetVenuesListQuery } = VanuesApi;
 export default VanuesApi;

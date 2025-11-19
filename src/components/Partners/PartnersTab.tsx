@@ -23,7 +23,7 @@ export default function PartnersTab() {
       label: "All",
       children: (
         <PartnersTable
-          data={data?.data}
+          data={data?.data?.data}
           isLoading={isLoading}
           isFetching={isFetching}
         />
@@ -34,7 +34,7 @@ export default function PartnersTab() {
       label: "Pending",
       children: (
         <PartnersTable
-          data={data?.data}
+          data={data?.data?.data}
           isLoading={isLoading}
           isFetching={isFetching}
         />
@@ -45,7 +45,7 @@ export default function PartnersTab() {
       label: "Approved",
       children: (
         <PartnersTable
-          data={data?.data}
+          data={data?.data?.data}
           isLoading={isLoading}
           isFetching={isFetching}
         />
@@ -56,7 +56,7 @@ export default function PartnersTab() {
       label: "Reject",
       children: (
         <PartnersTable
-          data={data?.data}
+          data={data?.data?.data}
           isLoading={isLoading}
           isFetching={isFetching}
         />

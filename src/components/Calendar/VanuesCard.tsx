@@ -110,7 +110,7 @@ export default function VenueCard({ data }: Props) {
         setIsModalOpen={setIsModalOpen}
         // className="bg-white max-w-lg"
       >
-        <CreateGameByvanue vanueId={vanueId} />
+        <CreateGameByvanue vanueId={vanueId}  setIsModalOpen={setIsModalOpen} />
       </Modal>
     </div>
   );
