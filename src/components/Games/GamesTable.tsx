@@ -7,10 +7,13 @@ import defaultImage from "@/assets/placeholder.webp";
 import { useState } from "react";
 import CreateGameByvanue from "../Calendar/CreateGameByvanue";
 import Modal from "../ui/modal";
+import { handleApiResponse } from "@/lib/handleRTKResponse";
+import { useDeleteGamesMutation } from "@/redux/api/gamesApi";
+import { CgSpinner } from "react-icons/cg";
 
 export default function GamesTable({ data, isLoading, isFetching }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -26,6 +29,13 @@ export default function GamesTable({ data, isLoading, isFetching }: any) {
       minute: "2-digit",
     });
   };
+
+  const [deleteFN, { isLoading: isDeleting }] = useDeleteGamesMutation();
+  const handleDelete = async (id: string) => {
+    setSelectedId(id);
+    await handleApiResponse(deleteFN, id, "Games deleted successfully!");
+  };
+
   if (isLoading || isFetching) {
     return <TableSk />;
   }
@@ -38,7 +48,7 @@ export default function GamesTable({ data, isLoading, isFetching }: any) {
               Image
             </th>
             <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
-              Venue
+              Titel
             </th>
             <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
               Location
@@ -149,7 +159,13 @@ export default function GamesTable({ data, isLoading, isFetching }: any) {
                     >
                       <MediaButton type="edit" />
                     </div>
-                    <MediaButton type="cross" />
+                    <div onClick={() => handleDelete(game.id)}>
+                      {isDeleting && selectedId === game.id ? (
+                        <CgSpinner className="animate-spin text-red-500" />
+                      ) : (
+                        <MediaButton type="cross" />
+                      )}
+                    </div>
                   </div>
                 </td>
               </tr>

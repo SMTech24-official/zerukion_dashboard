@@ -24,10 +24,27 @@ const GamesApi = baseApi.injectEndpoints({
 
     //ceate games
     createGames: build.mutation({
-      query: (date) => ({
+      query: (data) => ({
         url: `/matches`,
         method: "POST",
-        body: date,
+        body: data,
+      }),
+      invalidatesTags: ["games"],
+    }),
+    //update games
+    updateGames: build.mutation({
+      query: ({ id, data }) => ({
+        url: `/matches/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["games"],
+    }),
+    //delete games
+    deleteGames: build.mutation({
+      query: (id) => ({
+        url: `/matches/${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["games"],
     }),
@@ -38,5 +55,7 @@ export const {
   useGetAllGamesQuery,
   useGetSingelGamesQuery,
   useCreateGamesMutation,
+  useUpdateGamesMutation,
+  useDeleteGamesMutation,
 } = GamesApi;
 export default GamesApi;

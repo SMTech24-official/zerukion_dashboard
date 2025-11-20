@@ -7,6 +7,7 @@ import { handleApiResponse } from "@/lib/handleRTKResponse";
 import {
   useCreateGamesMutation,
   useGetSingelGamesQuery,
+  useUpdateGamesMutation,
 } from "@/redux/api/gamesApi";
 import {
   useGetSingleVenueQuery,
@@ -24,9 +25,8 @@ interface FormProps {
   minPlayers: string;
   maxPlayers: string;
   skillLevel: string;
-  duration: string;
-  pricePerHour: string;
-  bookingFeePerPlayer: string;
+  duration: number;
+  bookingFeePerPlayer: number;
   venue: string;
   sportsType: string;
   date: any;
@@ -67,18 +67,16 @@ export default function CreateGameByvanue({
     if (singleVanue?.data && vanueId) {
       const v = singleVanue.data;
       setSelected(v);
-
       setValue("venue", v.id);
       setValue("sportsType", v.sportsType);
       setValue("location", v.address);
       setValue("locationLat", v.locationLat);
       setValue("locationLng", v.locationLng);
-      setValue("pricePerHour", v.pricePerHour?.toString() || "0");
     }
 
     if (singleGame?.data && gameId) {
       const g = singleGame.data;
-      setSelected({ venueName: g.title });
+      setSelected(g.venue);
 
       setValue("title", g.title);
       setValue("venue", g.venueId);
@@ -86,16 +84,15 @@ export default function CreateGameByvanue({
       setValue("location", g.location);
       setValue("locationLat", g.locationLat);
       setValue("locationLng", g.locationLng);
-      setValue("pricePerHour", g.price?.toString() || "0");
 
       setValue("date", dayjs(g.date));
       setValue("startTime", dayjs(g.time));
 
-      setValue("duration", g.playingDuration.toString());
-      setValue("minPlayers", g.minimumPlayers.toString());
-      setValue("maxPlayers", g.maximumPlayers.toString());
+      setValue("duration", g.playingDuration);
+      setValue("minPlayers", g.minimumPlayers);
+      setValue("maxPlayers", g.maximumPlayers);
       setValue("skillLevel", g.skillLevel);
-      setValue("bookingFeePerPlayer", g.bookingFeePerPlayer?.toString() || "0");
+      setValue("bookingFeePerPlayer", g.price);
     }
   }, [singleVanue, singleGame, setValue, vanueId, gameId]);
 
@@ -106,11 +103,11 @@ export default function CreateGameByvanue({
     setValue("location", venue.address);
     setValue("locationLat", venue.locationLat);
     setValue("locationLng", venue.locationLng);
-    setValue("pricePerHour", venue.pricePerHour?.toString() || "0");
     setOpen(false);
   };
 
   const [createGameFN, { isLoading }] = useCreateGamesMutation();
+  const [updateGameFN, { isLoading: isUpdating }] = useUpdateGamesMutation();
 
   const onSubmit = async (data: any) => {
     const formData = new FormData();
@@ -119,7 +116,7 @@ export default function CreateGameByvanue({
       venueId: vanueId ? vanueId : data.venue,
       title: data.title,
       sportsType: data.sportsType,
-      price: data.pricePerHour,
+      price: data.bookingFeePerPlayer,
       skillLevel: data.skillLevel,
       location: data.location,
       locationLat: data.locationLat,
@@ -130,6 +127,7 @@ export default function CreateGameByvanue({
       minimumPlayers: data.minPlayers,
       maximumPlayers: data.maxPlayers,
     };
+    console.log("clicked!!");
 
     if (data.bannerImage) {
       data.bannerImage.forEach((file: any) => {
@@ -139,14 +137,26 @@ export default function CreateGameByvanue({
 
     formData.append("bodyData", JSON.stringify(gameInfo));
 
-    const res = await handleApiResponse(
-      createGameFN,
-      formData,
-      "Game create successful!"
-    );
-    if (res.success) {
-      methods.reset();
-      setIsModalOpen(false);
+    if (gameId) {
+      const res = await handleApiResponse(
+        updateGameFN,
+        { id: gameId, data: formData },
+        "Game update successful!"
+      );
+      if (res.success) {
+        methods.reset();
+        setIsModalOpen(false);
+      }
+    } else {
+      const res = await handleApiResponse(
+        createGameFN,
+        formData,
+        "Game create successful!"
+      );
+      if (res.success) {
+        methods.reset();
+        setIsModalOpen(false);
+      }
     }
   };
 
@@ -267,14 +277,18 @@ export default function CreateGameByvanue({
             <FormInput
               name="bookingFeePerPlayer"
               type="number"
-              label="Booking Fee per Player (€)"
+              label="Price per Player (€)"
             />
 
             <button
               type="submit"
               className="bg-green-600 text-white px-6 py-2 rounded"
             >
-              {isLoading ? "Loading..." : "Create Game"}
+              {isLoading || isUpdating
+                ? "Loading..."
+                : gameId
+                ? "Update Game"
+                : "Create Game"}
             </button>
           </form>
         </FormProvider>
