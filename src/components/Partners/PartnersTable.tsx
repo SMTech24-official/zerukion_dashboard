@@ -5,9 +5,25 @@ import TableSk from "../Skletone/TableSk";
 import { MediaButton } from "../ui/icon";
 import Modal from "../ui/modal";
 import PartnerDetailsModal from "./PartnersDetailsModal";
+import { useRejectPartnerRequestMutation } from "@/redux/api/parnersApi";
+import { handleApiResponse } from "@/lib/handleRTKResponse";
+import { CgSpinner } from "react-icons/cg";
 
 export default function PartnersTable({ data, isLoading, isFetching }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPartner, setSelectedPartner] = useState(null);
+
+  const [rejectPartnerRequestFN, { isLoading: isRejecting }] =
+    useRejectPartnerRequestMutation();
+  const handleReject = async (partnerId: string) => {
+    // Implement reject logic here
+    await handleApiResponse(
+      rejectPartnerRequestFN,
+      partnerId,
+      "Reject Partner Request!"
+    );
+  };
+
   if (isLoading || isFetching) {
     return <TableSk />;
   }
@@ -50,7 +66,7 @@ export default function PartnersTable({ data, isLoading, isFetching }: any) {
                 ? "bg-yellow-100 text-yellow-600"
                 : partner.status === "Accepted"
                 ? "bg-green-100 text-green-600"
-                : "bg-gray-100 text-gray-600";
+                : "bg-[#fed5d7] text-red-600";
 
             return (
               <tr key={index} className="border-t">
@@ -94,22 +110,42 @@ export default function PartnersTable({ data, isLoading, isFetching }: any) {
                 </td>
 
                 {/* Actions */}
-                <td className="px-6 py-4 text-left flex items-center gap-3">
-                  <div onClick={() => setIsModalOpen(true)}>
-                    <MediaButton type="eye" />
-                  </div>
-                  {partner.status !== "Accepted" &&
-                    partner.status !== "Rejected " && (
-                      <div>
-                        <MediaButton type="check" />
-                      </div>
-                    )}
-                  {partner.status !== "Accepted" &&
-                    partner.status !== "Rejected" && (
-                      <div>
+                <td className="px-6 py-4 text-left flex items-center justify-end gap-3">
+                  {partner.status !== "Pending" && (
+                    <div
+                      onClick={() => {
+                        setIsModalOpen(true);
+                        setSelectedPartner(partner?.id);
+                      }}
+                    >
+                      <MediaButton type="eye" />
+                    </div>
+                  )}
+
+                  {partner.status === "Pending" && (
+                    <div
+                      onClick={() => {
+                        setIsModalOpen(true);
+                        setSelectedPartner(partner?.id);
+                      }}
+                    >
+                      <MediaButton type="check" />
+                    </div>
+                  )}
+                  {partner.status === "Pending" && (
+                    <div
+                      onClick={() => {
+                        handleReject(partner?.id);
+                        setSelectedPartner(partner?.id);
+                      }}
+                    >
+                      {isRejecting && selectedPartner === partner?.id ? (
+                        <CgSpinner className="animate-spin text-red size-5" />
+                      ) : (
                         <MediaButton type="cross" />
-                      </div>
-                    )}
+                      )}
+                    </div>
+                  )}
                 </td>
               </tr>
             );
@@ -117,8 +153,15 @@ export default function PartnersTable({ data, isLoading, isFetching }: any) {
         </tbody>
       </table>
 
-      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-        <PartnerDetailsModal onClose={() => setIsModalOpen(false)} />
+      <Modal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        className="bg-white max-w-full md:max-w-[80%] lg:max-w-[35%]"
+      >
+        <PartnerDetailsModal
+          onClose={() => setIsModalOpen(false)}
+          partnerId={selectedPartner}
+        />
       </Modal>
     </div>
   );

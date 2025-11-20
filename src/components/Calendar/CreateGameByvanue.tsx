@@ -233,7 +233,7 @@ export default function CreateGameByvanue({
             </div>
 
             {/* Players */}
-            <div className="flex gap-5">
+            <div className="flex flex-col md:flex-row gap-5">
               <FormInput
                 name="minPlayers"
                 type="number"
@@ -247,7 +247,7 @@ export default function CreateGameByvanue({
             </div>
 
             {/* Skill Level */}
-            <div className="flex gap-5">
+            <div className="flex flex-col md:flex-row gap-5">
               <div className="w-full">
                 <label className="text-base font-normal text-textColor">
                   Skill Level

@@ -102,6 +102,7 @@ export default function GamesTable({ data, isLoading, isFetching }: any) {
                     alt="Banner"
                     width={60}
                     height={40}
+                    priority
                     className="rounded-md object-cover"
                   />
                 </td>

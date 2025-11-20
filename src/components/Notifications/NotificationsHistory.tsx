@@ -57,7 +57,7 @@ export default function NotificationsHistory() {
                       </span>
                     </td>
 
-                    <td className="px-6 py-4 text-textColor max-w-96">
+                    <td className="px-6 py-4 text-textColor max-w-full md:max-w-96">
                       {notification.body}
                     </td>
 
