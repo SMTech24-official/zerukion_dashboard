@@ -25,5 +25,13 @@ export const baseApi = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["auth", "dashboard", "partners", "vanues", "games", "settings"],
+  tagTypes: [
+    "auth",
+    "users",
+    "dashboard",
+    "partners",
+    "vanues",
+    "games",
+    "settings",
+  ],
 });

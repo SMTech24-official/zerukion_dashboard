@@ -16,8 +16,8 @@ const rubic = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "anestheLink",
-  description: "Extensive Workout Libraries",
+  title: "TeamUp – Pickup Sports!",
+  description: "Pickup Sports! anywhere, anytime",
 };
 
 // Bellota
