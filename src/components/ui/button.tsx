@@ -40,37 +40,12 @@ const buttonVariants = cva(
 );
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      asChild = false,
-      href,
-      animateOnView = false,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, variant, size, asChild = false, href, ...props }, ref) => {
     const Comp: any = asChild ? Slot : "button";
-
-    const motionProps = animateOnView
-      ? {
-          initial: { opacity: 0, y: 20 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true },
-          transition: { duration: 0.6, ease: "easeOut" as const },
-          whileHover: { scale: 1.05 },
-          whileTap: { scale: 0.97 },
-        }
-      : {
-          whileHover: { scale: 1.05 },
-          whileTap: { scale: 0.97 },
-        };
 
     if (href) {
       return (
-        <div {...motionProps}>
+        <div>
           <Link
             href={href}
             className={cn(
@@ -91,7 +66,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           "px-1 text-center"
         )}
         ref={ref}
-        {...(motionProps as any)}
         {...(props as any)}
       >
         {props.children}
@@ -103,4 +77,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
-

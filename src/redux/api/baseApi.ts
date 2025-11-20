@@ -33,5 +33,6 @@ export const baseApi = createApi({
     "vanues",
     "games",
     "settings",
+    'sports'
   ],
 });
