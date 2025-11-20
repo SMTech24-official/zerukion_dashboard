@@ -15,9 +15,25 @@ import RecentGames from "./RecentGames";
 
 export default function Dashboard() {
   const [selectedTimeType, setSelectedTimeType] = useState("Month");
-  const { data: totalData } = useGetDashboardTotalInfoQuery("");
-  const { data: topRevenue } = useGetTopRevenueQuery("");
-  const { data: recentGames } = useGetRecentGamesQuery("");
+  const {
+    data: totalData,
+    isLoading: isTotalDataLoading,
+    isFetching: isTotalDataFetching,
+    isError: isTotalDataError,
+  } = useGetDashboardTotalInfoQuery("");
+  const {
+    data: topRevenue,
+    isLoading: isTopRevenueLoading,
+    isFetching: isTopRevenueFetching,
+    isError: isTopRevenueError,
+  } = useGetTopRevenueQuery("");
+  const {
+    data: recentGames,
+    isLoading: isRecentGamesLoading,
+    isFetching: isRecentGamesFetching,
+    isError: isRecentGamesError,
+  } = useGetRecentGamesQuery("");
+
 
   return (
     <div className="p-5 md:p-10 space-y-7">
@@ -31,50 +47,74 @@ export default function Dashboard() {
           />
         </div>
       </div>
+      {/* header cards */}
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 ">
         <OverviewCard
           title="Total Revenue"
           amount={totalData?.data?.totalRevenue}
+          isLoading={isTotalDataLoading || isTotalDataFetching}
+          isError={isTotalDataError}
           icon="pound"
         />
         <OverviewCard
           title="Total Games"
           amount={totalData?.data?.totalMatches}
+          isLoading={isTotalDataLoading || isTotalDataFetching}
           icon="calender"
         />
         <OverviewCard
           title="Total Players"
           amount={totalData?.data?.totalPlayers}
+          isLoading={isTotalDataLoading || isTotalDataFetching}
           icon="man"
         />
         <OverviewCard
           title="Total Partners"
           amount={totalData?.data?.totalPartners}
+          isLoading={isTotalDataLoading || isTotalDataFetching}
           icon="groupOfMan"
         />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
-        <TotalRevenue revenue={topRevenue?.data?.totalRevenueBySport} />
-        <TopVenuesRevenue data={topRevenue?.data?.topVenuesByRevenue} />
+        <TotalRevenue
+          revenue={topRevenue?.data?.totalRevenueBySport}
+          isLoading={isTopRevenueLoading || isTopRevenueFetching}
+          isError={isTopRevenueError}
+        />
+        <TopVenuesRevenue
+          data={topRevenue?.data?.topVenuesByRevenue}
+          isLoading={isTopRevenueLoading || isTopRevenueFetching}
+          isError={isTopRevenueError}
+        />
       </div>
+
+      {/* recent games  */}
       <div>
-        <RecentGames data={recentGames?.data?.recentGames} />
+        <RecentGames
+          data={recentGames?.data?.recentGames}
+          isLoading={isRecentGamesLoading || isRecentGamesFetching}
+          isError={isRecentGamesError}
+        />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 ">
         <OverviewCard
           title="Confirmed Games"
           amount={recentGames?.data?.confirmedGames?.count}
           percentage={`${recentGames?.data?.confirmedGames?.percentage}% of total games`}
+          isLoading={isRecentGamesLoading || isRecentGamesFetching}
         />
         <OverviewCard
           title="Pending Games"
           amount={recentGames?.data?.pendingGames?.count}
           percentage={`${recentGames?.data?.pendingGames?.percentage}% of total games`}
+          isLoading={isRecentGamesLoading || isRecentGamesFetching}
         />
         <OverviewCard
           title="Canceled Games"
           amount={recentGames?.data?.cancelledGames?.count}
           percentage={`${recentGames?.data?.cancelledGames?.percentage}% of total games`}
+          isLoading={isRecentGamesLoading || isRecentGamesFetching}
         />
       </div>
     </div>
