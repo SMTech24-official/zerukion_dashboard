@@ -15,7 +15,6 @@ export default function TermsPrivacy() {
   const [terms, setTerms] = useState("");
   const [privacy, setPrivacy] = useState("");
   const { data } = useGetTermsPrivacyQuery("");
-  console.log(data?.data);
 
   const [createTermsPrivacyFN, { isLoading }] = useCreateTermsPrivacyMutation();
 

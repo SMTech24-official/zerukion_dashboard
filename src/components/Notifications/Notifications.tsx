@@ -1,15 +1,20 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { MediaButton } from "../ui/icon";
 import NotificationsHistory from "./NotificationsHistory";
+import Modal from "../ui/modal";
+import CreateNotification from "./CreateNotification";
 
 export default function Notifications() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="p-5 md:p-10 space-y-7">
       {/* header  */}
       <div className="flex justify-end w-full">
         <Button
-          //   onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsModalOpen(true)}
           variant="default"
           className="w-48"
         >
@@ -77,6 +82,10 @@ export default function Notifications() {
         </div>
         <NotificationsHistory />
       </div>
+
+      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
+        <CreateNotification setIsModalOpen={setIsModalOpen} />
+      </Modal>
     </div>
   );
 }

@@ -13,8 +13,6 @@ export default function PartnerDetailsModal({
   const [isFounder, setIsFounder] = useState(false);
 
   const handleSave = () => {
-    console.log("Commission Rate:", commissionRate);
-    console.log("Is Founder:", isFounder);
     onClose();
   };
 

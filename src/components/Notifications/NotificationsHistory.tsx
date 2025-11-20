@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/dateFormate";
 
 export default function NotificationsHistory() {
   const { data, isLoading, isError } = useGetAllNotificationsQuery("");
+
   return (
     <div>
       {isError && (
@@ -30,6 +31,9 @@ export default function NotificationsHistory() {
                 <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
                   Date
                 </th>
+                <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
+                  Action
+                </th>
               </tr>
             </thead>
 
@@ -53,7 +57,7 @@ export default function NotificationsHistory() {
                       </span>
                     </td>
 
-                    <td className="px-6 py-4 text-textColor">
+                    <td className="px-6 py-4 text-textColor max-w-96">
                       {notification.body}
                     </td>
 
@@ -63,6 +67,13 @@ export default function NotificationsHistory() {
 
                     <td className="px-6 py-4 text-textColor">
                       {formatDate(notification.createdAt)}
+                    </td>
+                    <td className="px-6 py-4 text-textColor">
+                      <button
+                        className={`bg-[#dcfce7] text-primaryColor px-2 text-sm font-light rounded-full`}
+                      >
+                        Send
+                      </button>
                     </td>
                   </tr>
                 );

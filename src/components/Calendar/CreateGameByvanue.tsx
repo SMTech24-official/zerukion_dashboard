@@ -60,7 +60,6 @@ export default function CreateGameByvanue({
   const { data: singleGame } = useGetSingelGamesQuery(gameId, {
     skip: !gameId,
   });
-  console.log(singleGame);
   const { data: vanuesList } = useGetVenuesListQuery("");
 
   useEffect(() => {
@@ -127,7 +126,6 @@ export default function CreateGameByvanue({
       minimumPlayers: data.minPlayers,
       maximumPlayers: data.maxPlayers,
     };
-    console.log("clicked!!");
 
     if (data.bannerImage) {
       data.bannerImage.forEach((file: any) => {

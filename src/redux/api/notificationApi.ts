@@ -10,15 +10,17 @@ const NotificationApi = baseApi.injectEndpoints({
       providesTags: ["users"],
     }),
     //update status
-    updateUserStatus: build.mutation({
-      query: (id) => ({
-        url: `/users/update-status/${id}`,
-        method: "PATCH",
+    createNotification: build.mutation({
+      query: (data) => ({
+        url: `/notifications/notify-match-players`,
+        method: "POST",
+        body: data,
       }),
       invalidatesTags: ["users"],
     }),
   }),
 });
 
-export const { useGetAllNotificationsQuery } = NotificationApi;
+export const { useGetAllNotificationsQuery, useCreateNotificationMutation } =
+  NotificationApi;
 export default NotificationApi;
