@@ -7,14 +7,6 @@ import { useGetAllGamesQuery } from "@/redux/api/gamesApi";
 export default function GamesTab({ search }: any) {
   const [activeTab, setActiveTab] = useState(1);
 
-  //   enum MatchStatusEnum {
-  //   Upcoming
-  //   Pending
-  //   Full
-  //   Ongoing
-  //   Completed
-  //   Cancelled
-  // }
   const { data, isLoading, isFetching, isError } = useGetAllGamesQuery({
     search: search,
     status:

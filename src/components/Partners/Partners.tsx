@@ -8,7 +8,7 @@ import { useGetAllStatisticsQuery } from "@/redux/api/parnersApi";
 
 export default function Partners() {
   const [search, setSearch] = useState("");
-  const { data } = useGetAllStatisticsQuery("");
+  const { data, isLoading, isError } = useGetAllStatisticsQuery("");
 
   return (
     <div className="p-5 md:p-10 space-y-7">
@@ -21,18 +21,24 @@ export default function Partners() {
           amount={data?.data?.pendingRequests}
           icon="applicaton"
           percentage="Awaiting review"
+          isError={isError}
+          isLoading={isLoading}
         />
         <OverviewCard
           title="Active Partners"
           amount={data?.data?.activePartners}
           icon="groupOfMan"
           percentage="Approved venues"
+          isError={isError}
+          isLoading={isLoading}
         />
         <OverviewCard
           title="Partner Revenue"
           amount={data?.data?.totalPartnerRevenue}
           icon="pound"
           percentage="Total generated"
+          isError={isError}
+          isLoading={isLoading}
         />
       </div>
 

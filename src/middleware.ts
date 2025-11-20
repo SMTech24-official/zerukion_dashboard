@@ -19,10 +19,14 @@ export function middleware(req: NextRequest) {
 // Apply the middleware only to specific paths
 export const config = {
   matcher: [
-    // "/dashboard",
-    // "/customer-info",
-    // "/all-booking",
-    // "/booking",
-    // "/work-on",
-  ], // Adjust this to match your protected routes
+    "/",
+    "/partners",
+    "/calendar",
+    "/venues",
+    "/games",
+    "/users",
+    "/payments",
+    "/notifications",
+    "/settings",
+  ],
 };

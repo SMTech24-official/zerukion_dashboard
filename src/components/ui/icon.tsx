@@ -20,7 +20,9 @@ type MediaButtonProps = {
     | "edit"
     | "games"
     | "document"
-    | "notification";
+    | "notification"
+    | "complete"
+    | "pending";
 };
 
 const icons = {
@@ -651,6 +653,54 @@ const icons = {
         stroke="#00A63E"
         strokeWidth="1.5"
         strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  complete: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M16 7H22V13"
+        stroke="#00A63E"
+        strokeWidth="1.33333"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M22 7L13.5 15.5L8.5 10.5L2 17"
+        stroke="#00A63E"
+        strokeWidth="1.33333"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  pending: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M20 5H4C2.89543 5 2 5.89543 2 7V17C2 18.1046 2.89543 19 4 19H20C21.1046 19 22 18.1046 22 17V7C22 5.89543 21.1046 5 20 5Z"
+        stroke="#00A63E"
+        strokeWidth="1.33333"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M2 10H22"
+        stroke="#00A63E"
+        strokeWidth="1.33333"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   ),
