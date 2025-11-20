@@ -102,8 +102,8 @@ const SidebarContent = ({
 
     {/* Nav Items */}
     <ul className="ml-1">
-      {navigation?.map((item) => (
-        <li key={item.route}>
+      {navigation?.map((item,index:number) => (
+        <li key={index}>
           <Link
             href={item.route}
             className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-md transition-colors ${

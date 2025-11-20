@@ -27,8 +27,8 @@ export default function SettingsNavbar() {
       <div className="p-6">
         <div className="bg-white h-96 w-full md:w-80 p-6">
           <ul className="ml-1">
-            {navigation?.map((item) => (
-              <li key={item.route}>
+            {navigation?.map((item, index: number) => (
+              <li key={index}>
                 <Link
                   href={item.route}
                   className={`flex items-center justify-between gap-3 px-4 py-4 text-lg mb-2 rounded-md transition-colors ${

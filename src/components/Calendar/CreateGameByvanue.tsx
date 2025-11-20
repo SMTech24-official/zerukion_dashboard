@@ -259,8 +259,8 @@ export default function CreateGameByvanue({
                   className="mt-3 w-full py-3 bg-[#f3f3f5] rounded-lg px-3 outline-none"
                 >
                   <option value="">Select skill level</option>
-                  {skillType.map((type) => (
-                    <option key={type.value} value={type.value}>
+                  {skillType.map((type, index:number) => (
+                    <option key={index} value={type.value}>
                       {type.label}
                     </option>
                   ))}

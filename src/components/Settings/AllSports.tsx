@@ -58,8 +58,8 @@ export default function AllSports() {
           </thead>
 
           <tbody>
-            {data?.map((item: any) => (
-              <tr key={item.id} className="border-t">
+            {data?.map((item: any, index: number) => (
+              <tr key={index} className="border-t">
                 <td className="px-2 xl:px-6 py-1 xl:py-4 text-textColor leading-5">
                   {item.sportType}
                 </td>

@@ -7,17 +7,10 @@ import { CgSpinner } from "react-icons/cg";
 import { IoBanOutline } from "react-icons/io5";
 import { PiUserCheckLight } from "react-icons/pi";
 import TableSk from "../Skletone/TableSk";
+import { formatDate } from "@/lib/dateFormate";
 
 export default function UsersTable({ data, isLoading, isFetching }: any) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   const [updateStatusFN, { isLoading: isUpdating }] =
     useUpdateUserStatusMutation();
