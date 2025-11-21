@@ -1,10 +1,9 @@
 "use client";
 
-import { CheckIcon, InfoIcon, UsersIcon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
 import type React from "react";
 
-import { useState, useMemo } from "react";
-
+import { useMemo, useState } from "react";
 
 export function BookingFeeManager() {
   const [feeType, setFeeType] = useState<"fixed" | "percentage">("fixed");
@@ -51,10 +50,9 @@ export function BookingFeeManager() {
     setFixedFee(Number(e.target.value));
   };
 
-  const handlePercentageFeeChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPercentageFee(Number(e.target.value));
+  const handlePercentageFeeChange = (type: any) => {
+    setFeeType(type);
+    setPercentageFee((prev) => (type === "percentage" ? prev : 5));
   };
 
   const handleCommissionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,46 +60,96 @@ export function BookingFeeManager() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 ">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-8">
-        <span className="text-3xl font-bold text-gray-900">€</span>
-        <h1 className="text-3xl font-bold text-gray-900">Player Booking Fee</h1>
-      </div>
 
       {/* Fee Type Section */}
       <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <div className="space-y-4">
-          <h2 className="text-sm font-semibold text-gray-900">Fee Type</h2>
-          <p className="text-sm text-gray-600">
-            Choose between fixed amount or percentage
-          </p>
+        <div className="">
+          <div className="text-left">
+            <h2 className="text-base font-semibold text-gray-900">
+              € Player Booking Fee
+            </h2>
+            <p className="text-sm text-gray-600">
+              Choose between fixed amount or percentage
+            </p>
+          </div>
+          <div className="mt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 mb-4">
+            <div className="text-left">
+              <h2 className="text-base font-semibold text-gray-900">
+                Fee Type
+              </h2>
+              <p className="text-sm text-gray-600">
+                Choose between fixed amount or percentage
+              </p>
+            </div>
+            <div className="flex items-center gap-5">
+              <button
+                onClick={() => handlePercentageFeeChange("fixed")}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  feeType === "fixed"
+                    ? "bg-primaryColor text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                Fixed (€)
+              </button>
+              <button
+                onClick={() => handlePercentageFeeChange("percentage")}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  feeType === "percentage"
+                    ? "bg-primaryColor text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                Percentage (%)
+              </button>
+            </div>
+          </div>
 
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between ">
             <label className="flex items-center gap-3">
-              <input
-                type="radio"
-                name="feeType"
-                value="fixed"
-                checked={feeType === "fixed"}
-                onChange={() => setFeeType("fixed")}
-                className="w-4 h-4 cursor-pointer"
-              />
               <span className="text-sm font-medium text-gray-700">
                 Fixed Fee per Player
               </span>
             </label>
             <div className="flex items-center gap-2">
-              <CheckIcon />
-              <span className="text-lg font-bold text-green-600">
-                €{fixedFee.toFixed(2)}
-              </span>
+              {feeType === "percentage" ? (
+                <span className="text-lg font-bold text-green-600">
+                  {percentageFee}%
+                </span>
+              ) : (
+                <span className="text-lg font-bold text-green-600">
+                  €{fixedFee.toFixed(2)}
+                </span>
+              )}
             </div>
           </div>
 
           {/* Fixed Fee Slider */}
+          {feeType === "percentage" && (
+            <div className="">
+              <input
+                type="range"
+                min="0"
+                max="20"
+                step="0.5"
+                value={percentageFee}
+                onChange={(e) => setPercentageFee(Number(e.target.value))}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
+                style={{
+                  background: `linear-gradient(to right, #16a34a 0%, #16a34a ${
+                    (percentageFee / 20) * 100
+                  }%, #e5e7eb ${(percentageFee / 20) * 100}%, #e5e7eb 100%)`,
+                }}
+              />
+              <p className="text-xs text-gray-500 text-left">
+                Current: {percentageFee}% of venue price
+              </p>
+            </div>
+          )}
           {feeType === "fixed" && (
-            <div className="space-y-3">
+            <div className="">
               <input
                 type="range"
                 min="0.1"
@@ -118,78 +166,46 @@ export function BookingFeeManager() {
                   }%, #e5e7eb 100%)`,
                 }}
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-left text-gray-500">
                 Recommended range: €0.25 - €1.50 per player
               </p>
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex gap-2">
-                <InfoIcon />
-                <p className="text-xs text-blue-700">
-                  Changes to booking fees will apply to all new bookings.
-                  Existing bookings will retain their original fee structure.
-                </p>
-              </div>
             </div>
           )}
 
-          <label className="flex items-center gap-3">
-            <input
-              type="radio"
-              name="feeType"
-              value="percentage"
-              checked={feeType === "percentage"}
-              onChange={() => setFeeType("percentage")}
-              className="w-4 h-4 cursor-pointer"
-            />
-            <span className="text-sm font-medium text-gray-700">
-              Percentage (%)
-            </span>
-          </label>
-
-          {feeType === "percentage" && (
-            <div className="space-y-3 ml-7">
-              <input
-                type="range"
-                min="0"
-                max="20"
-                step="0.5"
-                value={percentageFee}
-                onChange={handlePercentageFeeChange}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600"
-                style={{
-                  background: `linear-gradient(to right, #16a34a 0%, #16a34a ${
-                    (percentageFee / 20) * 100
-                  }%, #e5e7eb ${(percentageFee / 20) * 100}%, #e5e7eb 100%)`,
-                }}
-              />
-              <p className="text-xs text-gray-500">
-                Current: {percentageFee}% of venue price
-              </p>
-            </div>
-          )}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center gap-2 mt-2">
+            <InfoIcon />
+            <p className="text-xs text-blue-700">
+              Changes to booking fees will apply to all new bookings. Existing
+              bookings will retain their original fee structure.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Partner Commission Section */}
       <div className="bg-white rounded-lg p-6 border border-gray-200">
         <div className="space-y-4">
-          <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <UsersIcon />
-            Partner Commission
-          </h2>
+          <div className="text-left">
+            <h2 className="text-base font-semibold text-gray-900">
+              % Partner Commission
+            </h2>
+          </div>
 
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-gray-700 block mb-2">
-                Default Commission Rate
-              </label>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs text-gray-600">
-                  Standard commission rate applied to all new partners
-                </span>
-                <span className="text-lg font-bold text-gray-900">
-                  {commissionRate.toFixed(1)}%
-                </span>
+              <div className="flex items-center justify-between ">
+                <label className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-gray-700">
+                    Default Commission Rate
+                  </span>
+                </label>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-bold text-green-600">
+                    {commissionRate.toFixed(1)}%
+                  </span>
+                </div>
               </div>
+
               <input
                 type="range"
                 min="0"
@@ -204,35 +220,42 @@ export function BookingFeeManager() {
                   }%, #e5e7eb ${(commissionRate / 20) * 100}%, #e5e7eb 100%)`,
                 }}
               />
+
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-xs text-gray-600">
+                  Standard commission rate applied to all new partners
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Special Commission Tiers */}
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            <h3 className="text-sm font-semibold text-gray-900 text-left mb-3">
               Special Commission Tiers
             </h3>
             <div className="space-y-2 bg-gray-50 rounded-lg p-4">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-start md:items-center">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">
-                    Founder Partners
+                  <div className="flex items-start md:items-center gap-1 text-left">
+                    <p className="text-sm font-medium text-gray-700">
+                      Founder Partners
+                    </p>
+                    <p className="text-xs text-gray-500">(Early adopters)</p>
+                  </div>
+                  <p className="text-xs text-gray-500 text-left">
+                    Partners marked as founders receive special rates
                   </p>
-                  <p className="text-xs text-gray-500">Early adopters</p>
                 </div>
                 <span className="text-sm font-medium text-gray-600">0%</span>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Commission is calculated on the venue booking amount and deducted
-              before partner payout
-            </p>
           </div>
 
           {/* Custom Rates */}
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <div className="flex justify-between items-center bg-gray-50 rounded-lg p-4">
-              <div>
+          <div className="">
+            <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center gap-2 bg-gray-50 rounded-lg p-4">
+              <div className="text-left">
                 <p className="text-sm font-medium text-gray-700">
                   Custom Rates
                 </p>
@@ -246,7 +269,7 @@ export function BookingFeeManager() {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex gap-2 mt-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center gap-2 mt-4">
             <InfoIcon />
             <p className="text-xs text-blue-700">
               Commission is calculated on the venue booking amount and deducted
@@ -258,15 +281,15 @@ export function BookingFeeManager() {
 
       {/* Fee Breakdown Example */}
       <div className="bg-white rounded-lg p-6 border border-gray-200">
-        <h2 className="text-sm font-semibold text-gray-900 mb-6">
+        <h2 className="text-sm text-left font-semibold text-gray-900 mb-6">
           Fee Breakdown Example
         </h2>
 
         <div className="space-y-4 mb-8">
           {/* Input Fields */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-gray-700 block mb-2">
+              <label className="text-sm text-left font-medium text-gray-700 block mb-2">
                 Venue Price (per hour)
               </label>
               <div className="relative">
@@ -282,7 +305,7 @@ export function BookingFeeManager() {
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-700 block mb-2">
+              <label className="text-sm text-left font-medium text-gray-700 block mb-2">
                 Number of Players
               </label>
               <input
@@ -360,7 +383,7 @@ export function BookingFeeManager() {
         </div>
 
         <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
-          💾 Save Settings
+          Save Settings
         </button>
       </div>
     </div>

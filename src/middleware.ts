@@ -19,14 +19,14 @@ export function middleware(req: NextRequest) {
 // Apply the middleware only to specific paths
 export const config = {
   matcher: [
-    "/",
-    "/partners",
-    "/calendar",
-    "/venues",
-    "/games",
-    "/users",
-    "/payments",
-    "/notifications",
-    "/settings",
+    // "/",
+    // "/partners",
+    // "/calendar",
+    // "/venues",
+    // "/games",
+    // "/users",
+    // "/payments",
+    // "/notifications",
+    // "/settings",
   ],
 };

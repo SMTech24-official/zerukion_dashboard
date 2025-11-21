@@ -21,7 +21,7 @@ export default function PaymentTab() {
   ];
 
   return (
-    <>
+    < >
       <div className="py-5 overflow-x-auto">
         {/* Tabs */}
         <ul className="flex items-center w-full md:max-w-[480px]  relative bg-[#0e2f1e] dark:bg-slate-800 rounded-full p-3">
@@ -38,7 +38,7 @@ export default function PaymentTab() {
               key={index}
               className={`${
                 item.key === activeTab.toString() ? "text-white" : "text-white"
-              } px-5 md:px-10 py-2 z-10 transition duration-300 cursor-pointer truncate`}
+              } px-5 md:px-10 py-2 z-10 transition duration-300 cursor-pointer truncate `}
               onClick={() => setActiveTab(Number(item.key))}
             >
               {item.label}
@@ -48,7 +48,7 @@ export default function PaymentTab() {
       </div>
 
       {/* Active tab content */}
-      <div className="text-center overflow-auto shadow-custom">
+      <div className="text-center overflow-auto ">
         {items.find((item) => item.key === activeTab.toString())?.children}
       </div>
     </>
