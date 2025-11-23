@@ -4,7 +4,10 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { MediaButton } from "../ui/icon";
 import AllVenuesTable from "./AllVenuesTable";
-import { useGetAllVenuesQuery } from "@/redux/api/vanuesApi";
+import {
+  useGetAllVenuesQuery,
+  useGetMyVenuesQuery,
+} from "@/redux/api/vanuesApi";
 import Modal from "../ui/modal";
 import AddVanue from "./AddVanue";
 
@@ -12,6 +15,9 @@ export default function Venues() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data, isLoading, isFetching, isError } = useGetAllVenuesQuery("");
+  const { data: myVenues } = useGetMyVenuesQuery("");
+
+  console.log(myVenues, "venues");
 
   return (
     <div className="p-5 md:p-10 space-y-7">
@@ -26,7 +32,6 @@ export default function Venues() {
         </Button>
       </div>
 
-
       <div className="bg-white p-5 border border-borderColor rounded-2xl shadow-custom">
         <div className="flex items-center gap-3">
           <MediaButton type="allVenues" />
@@ -34,7 +39,7 @@ export default function Venues() {
             Available All Venus
           </h1>
         </div>
-        
+
         <div className="mt-5">
           {isError && (
             <p className="text-red-500">Failed to load venues data.</p>

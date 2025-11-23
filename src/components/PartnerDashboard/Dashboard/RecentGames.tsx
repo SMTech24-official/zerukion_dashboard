@@ -1,9 +1,10 @@
+import TableSk from "@/components/Skletone/TableSk";
+import { MediaButton } from "@/components/ui/icon";
+import { formatDate, formatTime } from "@/lib/dateFormate";
 import React from "react";
-import { MediaButton } from "../ui/icon";
-import TableSk from "../Skletone/TableSk";
 
 export default function RecentGames({ data, isLoading, isError }: any) {
-  console.log(data)
+  console.log(data);
   return (
     <div className="bg-white p-5 border border-borderColor rounded-2xl shadow-custom">
       <div className="flex items-center gap-3">
@@ -23,9 +24,6 @@ export default function RecentGames({ data, isLoading, isError }: any) {
             <thead className="">
               <tr>
                 <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
-                  Game ID
-                </th>
-                <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
                   Venue
                 </th>
                 <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
@@ -35,7 +33,13 @@ export default function RecentGames({ data, isLoading, isError }: any) {
                   Date
                 </th>
                 <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
+                  Time
+                </th>
+                <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
                   Players
+                </th>
+                <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
+                  Revenue
                 </th>
                 <th className="text-left px-6 py-3 text-sm font-medium text-textColor">
                   Status
@@ -47,8 +51,6 @@ export default function RecentGames({ data, isLoading, isError }: any) {
               {data?.map((game: any, index: number) => {
                 const totalPlayers =
                   (game.teamAPlayers || 0) + (game.teamBPlayers || 0);
-
-                const formattedDate = new Date(game.date).toLocaleDateString();
 
                 // Badge color based on status
                 const statusColor =
@@ -62,10 +64,6 @@ export default function RecentGames({ data, isLoading, isError }: any) {
 
                 return (
                   <tr key={index} className="border-t">
-                    {/* GAME ID */}
-                    <td className="px-6 py-4 text-textColor whitespace-nowrap">
-                      G: {game.id.slice(-3)}
-                    </td>
                     {/* VENUE */}
                     <td className="px-6 py-4 text-textColor">
                       {game.venue?.venueName}
@@ -76,12 +74,22 @@ export default function RecentGames({ data, isLoading, isError }: any) {
                     </td>
                     {/* DATE */}
                     <td className="px-6 py-4 text-textColor">
-                      {formattedDate}
+                      {formatDate(game.date)}
+                    </td>
+                    <td className="px-6 py-4 text-textColor">
+                      {formatTime(game.time)}
                     </td>
 
                     {/* PLAYERS */}
                     <td className="px-6 py-4 text-textColor">{totalPlayers}</td>
                     {/* STATUS BADGE */}
+                    <td className="px-6 py-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor}`}
+                      >
+                        {game.revenue}
+                      </span>
+                    </td>
                     <td className="px-6 py-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor}`}

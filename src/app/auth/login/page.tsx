@@ -48,6 +48,7 @@ const ForgotPassword = () => {
 
     if (res.success) {
       Cookies.set("token", res?.data?.data?.accessToken);
+      Cookies.set("role", res?.data?.data?.role);
       dispatch(
         setUser({
           token: res?.data?.data?.accessToken,

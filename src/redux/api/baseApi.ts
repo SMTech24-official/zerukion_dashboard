@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store/store";
 
 const baseApiHandler = () => {
-  const apiUrl = "http://206.162.244.142:5031/api/v1";
-  // const apiUrl = "http://10.0.30.129:5135/api/v1";
+  // const apiUrl = "http://206.162.244.142:5031/api/v1";   
+  const apiUrl = "http://10.0.30.47:5031/api/v1";
   return apiUrl;
 };
 

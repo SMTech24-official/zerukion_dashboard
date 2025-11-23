@@ -1,29 +1,22 @@
 "use client";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import { navigation } from "@/constants/Navigation";
-import { useDispatch } from "react-redux";
-import Image from "next/image";
-import { logout } from "@/redux/slices/authSlice";
-import { useState } from "react";
-import { X, Menu } from "lucide-react";
 import logo from "@/assets/Logo.svg";
 import sidebarBg from "@/assets/Sidebar.png";
+import LogoutModal from "@/components/ui/logoutModal";
+import Modal from "@/components/ui/modal";
+import { navigation } from "@/constants/Navigation";
 import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const NavbarSlider = () => {
-  const path = usePathname();
-  const router = useRouter();
-  const dispatch = useDispatch();
-
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleLogOut = () => {
-    dispatch(logout());
-    Cookies.remove("token");
-    router.push("/auth/login");
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const path = usePathname();
+  const userRole = Cookies.get("role");
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -48,7 +41,13 @@ const NavbarSlider = () => {
         style={{ backgroundImage: `url(${sidebarBg.src})` }}
         className="hidden lg:flex  w-[220px] xl:w-[320px] h-screen border-r px-6 overflow-y-auto shrink-0"
       >
-        <SidebarContent isOpen={true} handleLogOut={handleLogOut} path={path} />
+        <SidebarContent
+          isOpen={true}
+          path={path}
+          userRole={userRole}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
       </div>
 
       {/* Sidebar Mobile (Drawer) */}
@@ -73,8 +72,10 @@ const NavbarSlider = () => {
 
             <SidebarContent
               isOpen={true}
-              handleLogOut={handleLogOut}
               path={path}
+              userRole={userRole}
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
             />
           </div>
         </div>
@@ -87,12 +88,16 @@ const NavbarSlider = () => {
 
 const SidebarContent = ({
   isOpen,
-  handleLogOut,
   path,
+  userRole,
+  isModalOpen,
+  setIsModalOpen,
 }: {
   isOpen: boolean;
-  handleLogOut: () => void;
   path: string;
+  userRole: string | undefined;
+  isModalOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
 }) => (
   <aside className="flex flex-col font-inter py-10 w-full h-full">
     {/* Logo */}
@@ -102,29 +107,31 @@ const SidebarContent = ({
 
     {/* Nav Items */}
     <ul className="ml-1">
-      {navigation?.map((item,index:number) => (
-        <li key={index}>
-          <Link
-            href={item.route}
-            className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-md transition-colors ${
-              path === item.route
-                ? "bg-primaryColor text-white"
-                : "text-white hover:bg-primaryColor hover:text-white"
-            }`}
-          >
-            <span className="text-xl">
-              {path === item.route ? item.whiteIcon : item.iconPath}
-            </span>
-            {isOpen && <span className="text-sm">{item.label}</span>}
-          </Link>
-        </li>
-      ))}
+      {navigation
+        ?.filter((item) => item.role.includes(userRole || ""))
+        ?.map((item, index: number) => (
+          <li key={index}>
+            <Link
+              href={item.route}
+              className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-md transition-colors ${
+                path === item.route && item.role.includes(userRole || "")
+                  ? "bg-primaryColor text-white"
+                  : "text-white hover:bg-primaryColor hover:text-white"
+              }`}
+            >
+              <span className="text-xl">
+                {path === item.route ? item.whiteIcon : item.iconPath}
+              </span>
+              {isOpen && <span className="text-sm">{item.label}</span>}
+            </Link>
+          </li>
+        ))}
     </ul>
 
     {/* Logout */}
     <div className="p-4 mt-auto">
       <button
-        onClick={handleLogOut}
+        onClick={() => setIsModalOpen(true)}
         className="flex items-center gap-2 w-full text-red-600 bg-red-100 px-4 py-3 rounded-lg text-sm font-medium"
       >
         <svg
@@ -151,6 +158,14 @@ const SidebarContent = ({
         {isOpen && <span>Log out</span>}
       </button>
     </div>
+
+    <Modal
+      isModalOpen={isModalOpen}
+      setIsModalOpen={setIsModalOpen}
+      // className="bg-white max-w-lg"
+    >
+      <LogoutModal setIsModalOpen={setIsModalOpen} />
+    </Modal>
   </aside>
 );
 

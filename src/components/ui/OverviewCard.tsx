@@ -8,6 +8,7 @@ interface OverviewCardProps {
   icon?: any;
   isLoading?: boolean;
   isError?: boolean;
+  footer?: string;
 }
 
 export default function OverviewCard({
@@ -17,6 +18,7 @@ export default function OverviewCard({
   icon,
   isLoading,
   isError,
+  footer,
 }: OverviewCardProps) {
   if (isError) {
     return <div className="text-red-500 mt-4">Failed to load data.</div>;
@@ -38,6 +40,7 @@ export default function OverviewCard({
             <h1 className="text-textColor text-xs font-medium leading-[150%]">
               {percentage}
             </h1>
+            <p>{footer}</p>
           </div>
           <div>
             <MediaButton type={icon} />

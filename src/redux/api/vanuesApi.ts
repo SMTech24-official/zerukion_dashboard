@@ -50,7 +50,7 @@ const VanuesApi = baseApi.injectEndpoints({
         method: "GET",
         params: { date },
       }),
-      providesTags: ["vanues",'games'],
+      providesTags: ["vanues", "games"],
     }),
     //get all venues list for dropdown
     getVenuesList: build.query({
@@ -77,6 +77,14 @@ const VanuesApi = baseApi.injectEndpoints({
       }),
       providesTags: ["vanues", "settings"],
     }),
+    //get partner vanue (my vanues)
+    getMyVenues: build.query({
+      query: () => ({
+        url: `/venues/my-venues`,
+        method: "GET",
+      }),
+      providesTags: ["vanues", "settings"],
+    }),
   }),
 });
 
@@ -89,5 +97,9 @@ export const {
   useGetVenuesListQuery,
   useGetSingleVenueQuery,
   useGetSportsTypeQuery,
+
+  ///
+
+  useGetMyVenuesQuery,
 } = VanuesApi;
 export default VanuesApi;
