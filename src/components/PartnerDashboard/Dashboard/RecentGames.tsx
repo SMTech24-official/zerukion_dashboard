@@ -4,7 +4,6 @@ import { formatDate, formatTime } from "@/lib/dateFormate";
 import React from "react";
 
 export default function RecentGames({ data, isLoading, isError }: any) {
-  console.log(data);
   return (
     <div className="bg-white p-5 border border-borderColor rounded-2xl shadow-custom">
       <div className="flex items-center gap-3">

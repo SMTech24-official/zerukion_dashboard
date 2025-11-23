@@ -26,7 +26,6 @@ export default function PartnerDashboard() {
     isError: isRecentGamesError,
   } = useGetPartnerRecentGamesQuery("");
 
-  console.log(recentGames?.data);
   return (
     <div className="p-5 md:p-10 space-y-7">
       <div className=" flex justify-end">

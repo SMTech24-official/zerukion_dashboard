@@ -10,14 +10,18 @@ import {
 } from "@/redux/api/vanuesApi";
 import Modal from "../ui/modal";
 import AddVanue from "./AddVanue";
+import Coockies from "js-cookie";
 
 export default function Venues() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { data, isLoading, isFetching, isError } = useGetAllVenuesQuery("");
-  const { data: myVenues } = useGetMyVenuesQuery("");
-
-  console.log(myVenues, "venues");
+  const userRole = Coockies.get("role");
+  const { data, isLoading, isFetching, isError } = useGetAllVenuesQuery({
+    skip: userRole !== "SUPERADMIN",
+  });
+  const { data: myVenues } = useGetMyVenuesQuery({
+    skip: userRole !== "PARTNER",
+  });
+  const venuesData = userRole === "PARTNER" ? myVenues?.data : data?.data?.data;
 
   return (
     <div className="p-5 md:p-10 space-y-7">
@@ -45,7 +49,7 @@ export default function Venues() {
             <p className="text-red-500">Failed to load venues data.</p>
           )}
           <AllVenuesTable
-            data={data?.data?.data}
+            data={venuesData}
             isLoading={isLoading}
             isFetching={isFetching}
           />

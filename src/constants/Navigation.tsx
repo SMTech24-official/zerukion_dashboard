@@ -36,7 +36,7 @@ export const navigation = [
     ),
   },
   {
-    label: "P-Dashboard",
+    label: "Dashboard",
     route: "/partner-dashboard",
     role: ["SUPERADMIN", "PARTNER"],
     iconPath: (
