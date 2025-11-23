@@ -21,7 +21,7 @@ export default function PaymentTab() {
   ];
 
   return (
-    < >
+    <>
       <div className="py-5 overflow-x-auto">
         {/* Tabs */}
         <ul className="flex items-center w-full md:max-w-[480px]  relative bg-[#0e2f1e] dark:bg-slate-800 rounded-full p-3">

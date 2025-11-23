@@ -6,9 +6,20 @@ export const formatDate = (dateString: string) => {
   });
 };
 export const formatTime = (dateString: string) => {
-  return new Date(dateString).toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  }).toLowerCase();
+  return new Date(dateString)
+    .toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })
+    .toLowerCase();
+};
+
+export const getGreeting = () => {
+  const hour = new Date().getHours();
+
+  if (hour < 12 ) return "GOOD MORNING";
+  if (hour < 17) return "GOOD AFTERNOON";
+  if (hour < 20) return "GOOD EVENING";
+  return "GOOD NIGHT";
 };

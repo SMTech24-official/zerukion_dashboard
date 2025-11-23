@@ -1,9 +1,22 @@
 "use client";
 
 import profileImage from "@/assets/Avatar.png";
+import { getGreeting } from "@/lib/dateFormate";
+import { RootState } from "@/redux/store/store";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+
+interface UserType {
+  profileImage?: string;
+  fullName?: string;
+}
 
 export default function Navbar() {
+  const user = useSelector((state: RootState) => state.auth.user) as UserType;
+  const pathName = usePathname();
+  const path = pathName.split("/")[1];
+
   return (
     <nav
       className={`flex items-center px-2 md:px-10 py-6 shadow-[8px_8px_72px_10px_rgba(21,14,73,0.08)]  bg-white z-[9] w-full`}
@@ -11,14 +24,14 @@ export default function Navbar() {
       <div className="flex justify-between w-full">
         <div className="hidden lg:flex items-center gap-3">
           <h1 className="text-textColor text-2xl font-bold leading-normal">
-            Overview
+            {path.charAt(0).toUpperCase() + path.slice(1)}
           </h1>
         </div>
         <div></div>
 
         <div className=" flex items-center gap-4">
           <Image
-            src={profileImage}
+            src={user?.profileImage || profileImage}
             alt="Logo"
             className="h-16 w-16 rounded-full"
             priority
@@ -55,11 +68,11 @@ export default function Navbar() {
                 </defs>
               </svg>
               <p className="text-primaryColor text-sm font-semibold leading-[150%] ">
-                GOOD MORNING
+                {getGreeting()}
               </p>
             </div>
             <h1 className="text-[#0C092A] text-2xl font-bold leading-[150%]">
-              Madelyn Dias
+              {user?.fullName || "User Name"}
             </h1>
           </div>
         </div>

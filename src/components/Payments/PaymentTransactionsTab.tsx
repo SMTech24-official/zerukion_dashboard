@@ -5,7 +5,7 @@ import { MediaButton } from "../ui/icon";
 import PaymentTransactionsTable from "./PaymentTransactionsTable";
 import { useGetAllPaymentsQuery } from "@/redux/api/paymentApi";
 
-export default function PaymentTab() {
+export default function PaymentTransactionsTab() {
   const [activeTab, setActiveTab] = useState(1);
   const { data } = useGetAllPaymentsQuery({
     filter:
